@@ -1,7 +1,6 @@
 import React, { FC, useState } from "react";
 import { Link } from "react-router-dom";
 import { v4 as uuidv4 } from "uuid";
-
 import {
   Avatar,
   Box,
@@ -11,7 +10,7 @@ import {
   Typography,
 } from "@mui/material";
 
-import { SETTINGS } from "../../constants";
+import { SETTINGS } from "components/Header/constants";
 
 export const HeaderMenu: FC = () => {
   const [isUserMenuOpen, setIsUserMenuOpen] = useState<null | HTMLElement>(

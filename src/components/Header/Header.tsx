@@ -1,12 +1,10 @@
 import React, { FC } from "react";
-import { HeaderNavigation } from "./components/HeaderNavigation";
-import { HeaderMenu } from "./components/HeaderMenu";
-
 import { AppBar, Container, Toolbar } from "@mui/material";
+import { HeaderNavigation, HeaderMenu } from "components/Header";
 
 export const Header: FC = () => {
   return (
-    <AppBar position="sticky" sx={{ width: "100%" }} color="secondary">
+    <AppBar position="sticky" sx={{ width: "100%" }} color="default">
       <Container>
         <Toolbar
           sx={{
