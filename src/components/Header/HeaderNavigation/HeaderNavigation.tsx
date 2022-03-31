@@ -1,12 +1,11 @@
 import React, { FC, useState } from "react";
 import { Link, useLocation } from "react-router-dom";
-import { Logo } from "../../../shared";
-import { v4 as uuidv4 } from "uuid";
-
 import { Box, IconButton, Menu, MenuItem, Typography } from "@mui/material";
 import MenuIcon from "@mui/icons-material/Menu";
+import { v4 as uuidv4 } from "uuid";
+import { HeaderLogo } from "components/Header";
 
-import { PAGES } from "../../constants";
+import { PAGES } from "components/Header/constants";
 
 export const HeaderNavigation: FC = () => {
   const { pathname } = useLocation();
@@ -23,7 +22,7 @@ export const HeaderNavigation: FC = () => {
   return (
     <>
       <Box sx={{ display: { xs: "none", md: "flex" }, alignItems: "center" }}>
-        <Logo sx={{ mr: 2, maxWidth: "105px" }} />
+        <HeaderLogo sx={{ mr: 2, maxWidth: "105px" }} />
         <Box>
           {PAGES.map(({ name, path }) => (
             <Typography
@@ -35,7 +34,7 @@ export const HeaderNavigation: FC = () => {
                 px: 2,
                 py: 0.5,
                 borderRadius: 2,
-                color: "inherit",
+                color: pathname === path ? "#fff" : "#37383c",
                 backgroundColor: pathname === path ? "#28c38a" : "none",
               }}
             >
@@ -75,7 +74,7 @@ export const HeaderNavigation: FC = () => {
             </MenuItem>
           ))}
         </Menu>
-        <Logo sx={{ ml: 2, maxWidth: "105px" }} />
+        <HeaderLogo sx={{ ml: 2, maxWidth: "105px" }} />
       </Box>
     </>
   );
