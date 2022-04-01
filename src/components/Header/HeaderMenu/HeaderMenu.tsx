@@ -2,15 +2,15 @@ import React, { FC, useState } from "react";
 import { Link } from "react-router-dom";
 import { v4 as uuidv4 } from "uuid";
 import {
-  Avatar,
   Box,
-  IconButton,
   Menu,
+  Avatar,
   MenuItem,
   Typography,
+  IconButton,
 } from "@mui/material";
 
-import { SETTINGS } from "components/Header/constants";
+import { PAGES_MENU } from "components/Header/constants";
 
 export const HeaderMenu: FC = () => {
   const [isUserMenuOpen, setIsUserMenuOpen] = useState<null | HTMLElement>(
@@ -28,10 +28,7 @@ export const HeaderMenu: FC = () => {
   return (
     <Box>
       <IconButton onClick={handleOpenUserMenu}>
-        <Avatar
-          src="https://shapka-youtube.ru/wp-content/uploads/2021/02/prikolnaya-avatarka-dlya-patsanov.jpg"
-          alt=""
-        />
+        <Avatar src="" alt="" />
       </IconButton>
       <Menu
         sx={{ mt: "45px" }}
@@ -48,7 +45,7 @@ export const HeaderMenu: FC = () => {
         open={Boolean(isUserMenuOpen)}
         onClose={handleCloseUserMenu}
       >
-        {SETTINGS.map(({ name, path }) => (
+        {PAGES_MENU.map(({ name, path }) => (
           <MenuItem
             key={uuidv4()}
             component={Link}

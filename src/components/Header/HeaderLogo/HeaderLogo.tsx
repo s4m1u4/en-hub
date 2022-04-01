@@ -1,12 +1,10 @@
 import React, { FC } from "react";
 import { Link } from "react-router-dom";
-import { Box, SxProps } from "@mui/material";
+import { Box } from "@mui/material";
+
+import { HeaderLogoProps } from "components/Header/types";
 
 import logoEnHub from "assets/images/LogoEnHub.png";
-
-interface HeaderLogoProps {
-  sx: SxProps;
-}
 
 export const HeaderLogo: FC<HeaderLogoProps> = ({ sx }) => {
   return (
