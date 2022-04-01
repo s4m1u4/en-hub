@@ -2,17 +2,19 @@ import React, { FC } from "react";
 import { useFormik } from "formik";
 import { Button, Grid, TextField } from "@mui/material";
 
-import { IUserAuthenticationData } from "types";
-import { LoginFormSchema } from "./LoginFormSchema";
+import { IUserRegistrationData } from "types";
+import { SignUpFormSchema } from "./SignUpFormSchema";
 
-export const LoginForm: FC = () => {
+export const SignUpForm: FC = () => {
   const formik = useFormik({
     initialValues: {
+      firstName: "",
+      lastName: "",
       email: "",
       password: "",
     },
-    validationSchema: LoginFormSchema,
-    onSubmit: async (values: IUserAuthenticationData, { resetForm }) => {
+    validationSchema: SignUpFormSchema,
+    onSubmit: async (values: IUserRegistrationData, { resetForm }) => {
       alert(JSON.stringify(values, null, 2));
       resetForm();
     },
@@ -21,12 +23,39 @@ export const LoginForm: FC = () => {
   return (
     <form onSubmit={formik.handleSubmit}>
       <Grid container spacing={2}>
+        <Grid item xs={12} sm={6}>
+          <TextField
+            fullWidth
+            name="firstName"
+            type="text"
+            size="small"
+            label="First name"
+            value={formik.values.firstName}
+            onBlur={formik.handleBlur}
+            onChange={formik.handleChange}
+            error={formik.touched.firstName && !!formik.errors.firstName}
+            helperText={formik.touched.firstName && formik.errors.firstName}
+          />
+        </Grid>
+        <Grid item xs={12} sm={6}>
+          <TextField
+            fullWidth
+            name="lastName"
+            type="text"
+            size="small"
+            label="Last name"
+            value={formik.values.lastName}
+            onBlur={formik.handleBlur}
+            onChange={formik.handleChange}
+            error={formik.touched.lastName && !!formik.errors.lastName}
+            helperText={formik.touched.lastName && formik.errors.lastName}
+          />
+        </Grid>
         <Grid item xs={12}>
           <TextField
             fullWidth
-            id="email"
             name="email"
-            type="email"
+            type="text"
             size="small"
             label="Email"
             value={formik.values.email}
@@ -39,7 +68,6 @@ export const LoginForm: FC = () => {
         <Grid item xs={12}>
           <TextField
             fullWidth
-            id="password"
             name="password"
             type="password"
             size="small"
@@ -53,7 +81,7 @@ export const LoginForm: FC = () => {
         </Grid>
         <Grid item xs={12}>
           <Button fullWidth variant="contained" type="submit">
-            Sign in
+            Sign up
           </Button>
         </Grid>
       </Grid>

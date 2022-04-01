@@ -1,5 +1,7 @@
-import { Login } from "pages";
+import { Login, SignUp } from "pages";
+import { IRoutes } from "./types";
 
-export const ROUTES = [
-  { path: "/login", element: <Login />, isRestricted: true },
+export const ROUTES: IRoutes[] = [
+  { path: "/login", element: <Login /> },
+  { path: "/signup", element: <SignUp /> },
 ];

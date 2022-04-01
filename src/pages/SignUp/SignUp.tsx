@@ -3,9 +3,9 @@ import { Link } from "react-router-dom";
 import { Avatar, Box, Container, Typography } from "@mui/material";
 import LockOutlinedIcon from "@mui/icons-material/LockOutlined";
 
-import { LoginForm } from "pages/Login";
+import { SignUpForm } from "pages/SignUp";
 
-export const Login: FC = () => {
+export const SignUp: FC = () => {
   return (
     <Container component="main" maxWidth="xs">
       <Box
@@ -21,17 +21,17 @@ export const Login: FC = () => {
           <LockOutlinedIcon />
         </Avatar>
         <Typography component="h1" variant="h5" mb={2}>
-          Sign in
+          Sign up
         </Typography>
-        <LoginForm />
+        <SignUpForm />
         <Typography
           mt={2}
           variant="body2"
           component={Link}
-          to="/signup"
+          to="/login"
           sx={{ color: "primary.main" }}
         >
-          Don't have an account? Sign Up
+          Already have an account? Sign in
         </Typography>
       </Box>
     </Container>

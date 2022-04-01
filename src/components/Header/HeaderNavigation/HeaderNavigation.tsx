@@ -3,9 +3,9 @@ import { Link, useLocation } from "react-router-dom";
 import { Box, IconButton, Menu, MenuItem, Typography } from "@mui/material";
 import MenuIcon from "@mui/icons-material/Menu";
 import { v4 as uuidv4 } from "uuid";
-import { HeaderLogo } from "components/Header";
 
-import { PAGES } from "components/Header/constants";
+import { HeaderLogo } from "components/Header";
+import { PAGES_NAVIGATION } from "components/Header/constants";
 
 export const HeaderNavigation: FC = () => {
   const { pathname } = useLocation();
@@ -22,20 +22,24 @@ export const HeaderNavigation: FC = () => {
   return (
     <>
       <Box sx={{ display: { xs: "none", md: "flex" }, alignItems: "center" }}>
-        <HeaderLogo sx={{ mr: 2, maxWidth: "105px" }} />
+        <HeaderLogo sx={{ mr: 2, maxWidth: "85px" }} />
         <Box>
-          {PAGES.map(({ name, path }) => (
+          {PAGES_NAVIGATION.map(({ name, path }) => (
             <Typography
-              variant="body1"
+              variant="button"
               component={Link}
               key={uuidv4()}
               to={path}
               sx={{
-                px: 2,
+                px: 1.5,
                 py: 0.5,
-                borderRadius: 2,
+                borderRadius: 3,
                 color: pathname === path ? "#fff" : "#37383c",
                 backgroundColor: pathname === path ? "#28c38a" : "none",
+                transition: "0.2s all ease-in-out",
+                "&:hover": {
+                  backgroundColor: pathname === path ? "#28c38a" : "#ccd4dc",
+                },
               }}
             >
               {name}
@@ -63,7 +67,7 @@ export const HeaderNavigation: FC = () => {
           open={Boolean(isNavMenuOpen)}
           onClose={handleCloseNavMenu}
         >
-          {PAGES.map(({ name, path }) => (
+          {PAGES_NAVIGATION.map(({ name, path }) => (
             <MenuItem
               key={uuidv4()}
               component={Link}
@@ -74,7 +78,7 @@ export const HeaderNavigation: FC = () => {
             </MenuItem>
           ))}
         </Menu>
-        <HeaderLogo sx={{ ml: 2, maxWidth: "105px" }} />
+        <HeaderLogo sx={{ ml: 2, maxWidth: "85px" }} />
       </Box>
     </>
   );

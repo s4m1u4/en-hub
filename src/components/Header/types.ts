@@ -1,9 +1,10 @@
-export interface IPages {
-  name: string;
-  path: string;
+import { SxProps } from "@mui/material";
+
+export interface HeaderLogoProps {
+  sx: SxProps;
 }
 
-export interface ISettings {
+export interface IPagesSettings {
   name: string;
   path: string;
 }
