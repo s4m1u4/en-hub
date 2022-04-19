@@ -1,14 +1,14 @@
 import React, { FC, useState } from "react";
-import { Link, useLocation } from "react-router-dom";
-import { Box, IconButton, Menu, MenuItem, Typography } from "@mui/material";
+import { NavLink } from "react-router-dom";
 import MenuIcon from "@mui/icons-material/Menu";
+import { green, grey } from "@mui/material/colors";
+import { IconButton, Menu, MenuItem, Stack, Typography } from "@mui/material";
 import { v4 as uuidv4 } from "uuid";
 
 import { HeaderLogo } from "components/Header";
 import { PAGES_NAVIGATION } from "components/Header/constants";
 
 export const HeaderNavigation: FC = () => {
-  const { pathname } = useLocation();
   const [isNavMenuOpen, setIsNavMenuOpen] = useState<null | HTMLElement>(null);
 
   const handleOpenNavMenu = (event: React.MouseEvent<HTMLElement>) => {
@@ -19,36 +19,40 @@ export const HeaderNavigation: FC = () => {
     setIsNavMenuOpen(null);
   };
 
+  const handleLinkStyles: object = ({ isActive }: { isActive: boolean }) => ({
+    color: isActive ? green[500] : grey[500],
+  });
+
   return (
     <>
-      <Box sx={{ display: { xs: "none", md: "flex" }, alignItems: "center" }}>
-        <HeaderLogo sx={{ mr: 2, maxWidth: "85px" }} />
-        <Box>
+      <Stack
+        spacing={2}
+        direction="row"
+        alignItems="center"
+        display={{ xs: "none", md: "flex" }}
+      >
+        <HeaderLogo />
+        <Stack spacing={2} direction="row" alignItems="center">
           {PAGES_NAVIGATION.map(({ name, path }) => (
             <Typography
-              variant="button"
-              component={Link}
               key={uuidv4()}
+              variant="button"
+              component={NavLink}
               to={path}
-              sx={{
-                px: 1.5,
-                py: 0.5,
-                borderRadius: 3,
-                color: pathname === path ? "#fff" : "#37383c",
-                backgroundColor: pathname === path ? "#28c38a" : "none",
-                transition: "0.2s all ease-in-out",
-                "&:hover": {
-                  backgroundColor: pathname === path ? "#28c38a" : "#ccd4dc",
-                },
-              }}
+              style={handleLinkStyles}
             >
               {name}
             </Typography>
           ))}
-        </Box>
-      </Box>
+        </Stack>
+      </Stack>
 
-      <Box sx={{ display: { xs: "flex", md: "none" }, alignItems: "center" }}>
+      <Stack
+        spacing={1}
+        direction="row"
+        alignItems="center"
+        display={{ xs: "flex", md: "none" }}
+      >
         <IconButton size="large" onClick={handleOpenNavMenu} color="inherit">
           <MenuIcon />
         </IconButton>
@@ -70,7 +74,7 @@ export const HeaderNavigation: FC = () => {
           {PAGES_NAVIGATION.map(({ name, path }) => (
             <MenuItem
               key={uuidv4()}
-              component={Link}
+              component={NavLink}
               to={path}
               onClick={handleCloseNavMenu}
             >
@@ -78,8 +82,8 @@ export const HeaderNavigation: FC = () => {
             </MenuItem>
           ))}
         </Menu>
-        <HeaderLogo sx={{ ml: 2, maxWidth: "85px" }} />
-      </Box>
+        <HeaderLogo />
+      </Stack>
     </>
   );
 };

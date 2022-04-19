@@ -1,6 +1,5 @@
 import React, { FC, useState } from "react";
 import { Link } from "react-router-dom";
-import { v4 as uuidv4 } from "uuid";
 import {
   Box,
   Menu,
@@ -10,9 +9,12 @@ import {
   IconButton,
 } from "@mui/material";
 
-import { PAGES_MENU } from "components/Header/constants";
+import { removeToken, removeUserId } from "helpers";
+import { useAppDispatch } from "hooks";
+import { setIsAuth } from "store/reducers/userSlice";
 
 export const HeaderMenu: FC = () => {
+  const dispatch = useAppDispatch();
   const [isUserMenuOpen, setIsUserMenuOpen] = useState<null | HTMLElement>(
     null
   );
@@ -25,9 +27,16 @@ export const HeaderMenu: FC = () => {
     setIsUserMenuOpen(null);
   };
 
+  const handleSignOut = () => {
+    removeToken();
+    removeUserId();
+    dispatch(setIsAuth());
+    setIsUserMenuOpen(null);
+  };
+
   return (
     <Box>
-      <IconButton onClick={handleOpenUserMenu}>
+      <IconButton sx={{ p: 0 }} onClick={handleOpenUserMenu}>
         <Avatar src="" alt="" />
       </IconButton>
       <Menu
@@ -45,16 +54,9 @@ export const HeaderMenu: FC = () => {
         open={Boolean(isUserMenuOpen)}
         onClose={handleCloseUserMenu}
       >
-        {PAGES_MENU.map(({ name, path }) => (
-          <MenuItem
-            key={uuidv4()}
-            component={Link}
-            to={path}
-            onClick={handleCloseUserMenu}
-          >
-            <Typography>{name}</Typography>
-          </MenuItem>
-        ))}
+        <MenuItem component={Link} to="/login" onClick={handleSignOut}>
+          <Typography>Sign out</Typography>
+        </MenuItem>
       </Menu>
     </Box>
   );

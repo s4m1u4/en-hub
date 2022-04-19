@@ -1,0 +1,48 @@
+{
+  "users": [
+    {
+      "email": "totalgol2015@gmail.com",
+      "password": "$2a$10$E21Lizhj0Blz8dYLk8ojZeQRD3hqArtubOBS1dNFfANCqMM0VaML6",
+      "firstName": "Vadim",
+      "lastName": "Samitashvili",
+      "gender": "male",
+      "age": 21,
+      "id": 1
+    }
+  ],
+  "words": [
+    {
+      "id": 2,
+      "set": 1,
+      "user": 1,
+      "stateWord": "new",
+      "originalWord": "Box",
+      "translationWord": "Коробка"
+    },
+    {
+      "id": 3,
+      "set": 1,
+      "user": 1,
+      "stateWord": "new",
+      "originalWord": "Water",
+      "translationWord": "Вода"
+    },
+    {
+      "id": 4,
+      "set": 1,
+      "user": 1,
+      "stateWord": "learning",
+      "originalWord": "Car",
+      "translationWord": "Машина"
+    },
+    {
+      "id": 5,
+      "set": 1,
+      "user": 1,
+      "stateWord": "learned",
+      "originalWord": "Weather",
+      "translationWord": "Погода"
+    }
+  ],
+  "sets": []
+}

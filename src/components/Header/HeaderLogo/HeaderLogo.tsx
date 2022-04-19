@@ -1,15 +1,16 @@
 import React, { FC } from "react";
 import { Link } from "react-router-dom";
-import { Box } from "@mui/material";
 
-import { HeaderLogoProps } from "components/Header/types";
+import logoEnHub from "assets/images/LogoEnHub.svg";
 
-import logoEnHub from "assets/images/LogoEnHub.png";
-
-export const HeaderLogo: FC<HeaderLogoProps> = ({ sx }) => {
+export const HeaderLogo: FC = () => {
   return (
-    <Box sx={sx} component={Link} to="/">
-      <img src={logoEnHub} alt="HeaderLogo EnHub" />
-    </Box>
+    <Link to="/dashboard">
+      <img
+        src={logoEnHub}
+        alt="Logo EnHub"
+        style={{ width: 85, borderRadius: 8 }}
+      />
+    </Link>
   );
 };
