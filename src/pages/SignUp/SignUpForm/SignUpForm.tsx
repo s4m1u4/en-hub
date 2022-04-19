@@ -1,28 +1,49 @@
-import React, { FC } from "react";
+import React, { ChangeEvent, FC } from "react";
 import { useFormik } from "formik";
-import { Button, Grid, TextField } from "@mui/material";
+import { LoadingButton } from "@mui/lab";
+import { Alert, Grid, MenuItem, TextField } from "@mui/material";
 
-import { IUserRegistrationData } from "types";
 import { SignUpFormSchema } from "./SignUpFormSchema";
+import { removeError, userRegistration } from "store/reducers/userSlice";
+import { useAppDispatch, useAppSelector } from "hooks";
+import { IUserRegistrationData } from "types";
 
 export const SignUpForm: FC = () => {
+  const dispatch = useAppDispatch();
+  const { error, isLoading } = useAppSelector((state) => state.user);
+
+  const formikHandleChange = (event: ChangeEvent) => {
+    formik.handleChange(event);
+    dispatch(removeError());
+  };
+
+  const handleSubmit = async (values: IUserRegistrationData) => {
+    await dispatch(userRegistration(values));
+  };
+
   const formik = useFormik({
     initialValues: {
       firstName: "",
       lastName: "",
       email: "",
       password: "",
+      gender: "",
+      age: "",
     },
     validationSchema: SignUpFormSchema,
-    onSubmit: async (values: IUserRegistrationData, { resetForm }) => {
-      alert(JSON.stringify(values, null, 2));
-      resetForm();
-    },
+    onSubmit: handleSubmit,
   });
 
   return (
     <form onSubmit={formik.handleSubmit}>
       <Grid container spacing={2}>
+        {error && (
+          <Grid item xs={12}>
+            <Alert variant="filled" severity="error">
+              {error}
+            </Alert>
+          </Grid>
+        )}
         <Grid item xs={12} sm={6}>
           <TextField
             fullWidth
@@ -32,7 +53,7 @@ export const SignUpForm: FC = () => {
             label="First name"
             value={formik.values.firstName}
             onBlur={formik.handleBlur}
-            onChange={formik.handleChange}
+            onChange={formikHandleChange}
             error={formik.touched.firstName && !!formik.errors.firstName}
             helperText={formik.touched.firstName && formik.errors.firstName}
           />
@@ -46,7 +67,7 @@ export const SignUpForm: FC = () => {
             label="Last name"
             value={formik.values.lastName}
             onBlur={formik.handleBlur}
-            onChange={formik.handleChange}
+            onChange={formikHandleChange}
             error={formik.touched.lastName && !!formik.errors.lastName}
             helperText={formik.touched.lastName && formik.errors.lastName}
           />
@@ -60,7 +81,7 @@ export const SignUpForm: FC = () => {
             label="Email"
             value={formik.values.email}
             onBlur={formik.handleBlur}
-            onChange={formik.handleChange}
+            onChange={formikHandleChange}
             error={formik.touched.email && !!formik.errors.email}
             helperText={formik.touched.email && formik.errors.email}
           />
@@ -74,15 +95,52 @@ export const SignUpForm: FC = () => {
             label="Password"
             value={formik.values.password}
             onBlur={formik.handleBlur}
-            onChange={formik.handleChange}
+            onChange={formikHandleChange}
             error={formik.touched.password && !!formik.errors.password}
             helperText={formik.touched.password && formik.errors.password}
           />
         </Grid>
         <Grid item xs={12}>
-          <Button fullWidth variant="contained" type="submit">
+          <TextField
+            select
+            fullWidth
+            name="gender"
+            type="text"
+            size="small"
+            label="Gender"
+            value={formik.values.gender}
+            onBlur={formik.handleBlur}
+            onChange={formikHandleChange}
+            error={formik.touched.gender && !!formik.errors.gender}
+            helperText={formik.touched.gender && formik.errors.gender}
+          >
+            <MenuItem value="male">Male</MenuItem>
+            <MenuItem value="female">Female</MenuItem>
+          </TextField>
+        </Grid>
+        <Grid item xs={12}>
+          <TextField
+            fullWidth
+            name="age"
+            type="number"
+            size="small"
+            label="Age"
+            value={formik.values.age}
+            onBlur={formik.handleBlur}
+            onChange={formikHandleChange}
+            error={formik.touched.age && !!formik.errors.age}
+            helperText={formik.touched.age && formik.errors.age}
+          />
+        </Grid>
+        <Grid item xs={12}>
+          <LoadingButton
+            fullWidth
+            variant="contained"
+            loading={isLoading}
+            type="submit"
+          >
             Sign up
-          </Button>
+          </LoadingButton>
         </Grid>
       </Grid>
     </form>

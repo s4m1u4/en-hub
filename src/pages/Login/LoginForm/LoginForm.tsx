@@ -1,37 +1,55 @@
-import React, { FC } from "react";
+import React, { ChangeEvent, FC } from "react";
 import { useFormik } from "formik";
-import { Button, Grid, TextField } from "@mui/material";
+import { LoadingButton } from "@mui/lab";
+import { Alert, Grid, TextField } from "@mui/material";
 
-import { IUserAuthenticationData } from "types";
 import { LoginFormSchema } from "./LoginFormSchema";
+import { removeError, userAuthentication } from "store/reducers/userSlice";
+import { useAppDispatch, useAppSelector } from "hooks";
+import { IUserAuthenticationData } from "types";
 
 export const LoginForm: FC = () => {
+  const dispatch = useAppDispatch();
+  const { error, isLoading } = useAppSelector((state) => state.user);
+
+  const formikHandleChange = (event: ChangeEvent) => {
+    formik.handleChange(event);
+    dispatch(removeError());
+  };
+
+  const handleSubmit = async (values: IUserAuthenticationData) => {
+    await dispatch(userAuthentication(values));
+  };
+
   const formik = useFormik({
     initialValues: {
       email: "",
       password: "",
     },
     validationSchema: LoginFormSchema,
-    onSubmit: async (values: IUserAuthenticationData, { resetForm }) => {
-      alert(JSON.stringify(values, null, 2));
-      resetForm();
-    },
+    onSubmit: handleSubmit,
   });
 
   return (
     <form onSubmit={formik.handleSubmit}>
       <Grid container spacing={2}>
+        {error && (
+          <Grid item xs={12}>
+            <Alert variant="filled" severity="error">
+              {error}
+            </Alert>
+          </Grid>
+        )}
         <Grid item xs={12}>
           <TextField
             fullWidth
-            id="email"
             name="email"
             type="email"
             size="small"
             label="Email"
             value={formik.values.email}
             onBlur={formik.handleBlur}
-            onChange={formik.handleChange}
+            onChange={formikHandleChange}
             error={formik.touched.email && !!formik.errors.email}
             helperText={formik.touched.email && formik.errors.email}
           />
@@ -39,22 +57,26 @@ export const LoginForm: FC = () => {
         <Grid item xs={12}>
           <TextField
             fullWidth
-            id="password"
             name="password"
             type="password"
             size="small"
             label="Password"
             value={formik.values.password}
             onBlur={formik.handleBlur}
-            onChange={formik.handleChange}
+            onChange={formikHandleChange}
             error={formik.touched.password && !!formik.errors.password}
             helperText={formik.touched.password && formik.errors.password}
           />
         </Grid>
         <Grid item xs={12}>
-          <Button fullWidth variant="contained" type="submit">
+          <LoadingButton
+            fullWidth
+            type="submit"
+            variant="contained"
+            loading={isLoading}
+          >
             Sign in
-          </Button>
+          </LoadingButton>
         </Grid>
       </Grid>
     </form>
