@@ -10,11 +10,12 @@ import {
 } from "@mui/material";
 
 import { removeToken, removeUserId } from "helpers";
-import { useAppDispatch } from "hooks";
+import { useAppDispatch, useAppSelector } from "hooks";
 import { setIsAuth } from "store/reducers/userSlice";
 
 export const HeaderMenu: FC = () => {
   const dispatch = useAppDispatch();
+  const { user } = useAppSelector((state) => state.user);
   const [isUserMenuOpen, setIsUserMenuOpen] = useState<null | HTMLElement>(
     null
   );
@@ -35,9 +36,12 @@ export const HeaderMenu: FC = () => {
   };
 
   return (
-    <Box>
+    <Box sx={{ display: "flex", alignItems: "center", gap: "1rem" }}>
+      <Typography variant="body1">
+        {user.firstName} {user.lastName}
+      </Typography>
       <IconButton sx={{ p: 0 }} onClick={handleOpenUserMenu}>
-        <Avatar src="" alt="" />
+        <Avatar src="/" alt={`${user.firstName} ${user.lastName}`} />
       </IconButton>
       <Menu
         sx={{ mt: "45px" }}

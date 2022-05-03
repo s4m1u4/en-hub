@@ -47,7 +47,7 @@ export const ROUTES: IRoutes[] = [
     ),
   },
   {
-    path: "/dictionary/words",
+    path: "/dictionary/sets/:setId",
     element: (
       <PrivateRoute>
         <Words />

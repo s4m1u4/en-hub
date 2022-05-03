@@ -1,7 +1,15 @@
 import React, { FC, useState } from "react";
+import { Link, useParams } from "react-router-dom";
 import PopupState, { bindMenu, bindTrigger } from "material-ui-popup-state";
-import { Box, IconButton, Menu, MenuItem, Stack } from "@mui/material";
-import { grey } from "@mui/material/colors";
+import {
+  Box,
+  IconButton,
+  Menu,
+  MenuItem,
+  Stack,
+  Typography,
+} from "@mui/material";
+import { blue, grey } from "@mui/material/colors";
 import DeleteRoundedIcon from "@mui/icons-material/DeleteRounded";
 import EmojiObjectsRoundedIcon from "@mui/icons-material/EmojiObjectsRounded";
 
@@ -13,7 +21,7 @@ import {
   changeStateWord,
 } from "store/reducers/dictionarySlice";
 import { handleIconStyles } from "helpers";
-import { IWord } from "types";
+import { ISet, IWord } from "types";
 
 import { TextWord } from "./WordsItem.styles";
 
@@ -23,9 +31,11 @@ interface IWordsItem {
 
 export const WordsItem: FC<IWordsItem> = ({ word }) => {
   const dispatch = useAppDispatch();
-  const { searchValue, stateValue } = useAppSelector(
+  const { setId } = useParams();
+  const { page, sets, searchValue, stateValue } = useAppSelector(
     (state) => state.dictionary
   );
+
   const [openModalDeleteWord, setModalOpenDeleteWord] =
     useState<boolean>(false);
 
@@ -34,7 +44,9 @@ export const WordsItem: FC<IWordsItem> = ({ word }) => {
 
   const handleDeleteWord = async (wordId: string | number) => {
     await dispatch(deleteWord(wordId));
-    await dispatch(getWords({ searchValue, stateValue }));
+    await dispatch(
+      getWords({ limit: 10, page, setId, searchValue, stateValue })
+    );
     handleCloseModalDeleteWord();
   };
 
@@ -43,8 +55,12 @@ export const WordsItem: FC<IWordsItem> = ({ word }) => {
     newState: string
   ) => {
     await dispatch(changeStateWord({ wordId, newState }));
-    await dispatch(getWords({ searchValue, stateValue }));
+    await dispatch(
+      getWords({ limit: 10, page, setId, searchValue, stateValue })
+    );
   };
+
+  const currentSet: ISet | undefined = sets.find((set) => set.id === word.set);
 
   return (
     <Stack
@@ -61,12 +77,22 @@ export const WordsItem: FC<IWordsItem> = ({ word }) => {
       </TextWord>
       <PopupState variant="popper">
         {(popupState) => (
-          <Box>
+          <Box sx={{ display: "flex", alignItems: "center" }}>
+            {word.set !== setId && (
+              <Typography
+                sx={{ color: blue[500], mr: 1 }}
+                variant="body2"
+                component={Link}
+                to={`/dictionary/sets/${currentSet?.id}`}
+              >
+                {currentSet?.title}
+              </Typography>
+            )}
             <IconButton {...bindTrigger(popupState)}>
               <EmojiObjectsRoundedIcon sx={handleIconStyles(word.stateWord)} />
             </IconButton>
             <IconButton onClick={handleOpenModalDeleteWord}>
-              <DeleteRoundedIcon />
+              <DeleteRoundedIcon sx={{ color: grey[500] }} />
             </IconButton>
             <ModalDeleteWord
               word={word}

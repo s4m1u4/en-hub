@@ -1,3 +1,4 @@
+import { AxiosResponse } from "axios";
 import { createAsyncThunk, createSlice, PayloadAction } from "@reduxjs/toolkit";
 
 import { api } from "services/api";
@@ -13,12 +14,12 @@ export const userRegistration = createAsyncThunk(
   "user/userRegistration",
   async (userRegistrationData: IUserRegistrationData, { rejectWithValue }) => {
     try {
-      const userData: IFetchUserData = await api.fetchRequest({
+      const response: AxiosResponse<IFetchUserData> = await api.fetchRequest({
         url: "/signup",
         method: "post",
         body: userRegistrationData,
       });
-      return userData;
+      return response.data;
     } catch (error: any) {
       return rejectWithValue(error.response.data);
     }
@@ -32,12 +33,12 @@ export const userAuthentication = createAsyncThunk(
     { rejectWithValue }
   ) => {
     try {
-      const userData: IFetchUserData = await api.fetchRequest({
+      const response: AxiosResponse<IFetchUserData> = await api.fetchRequest({
         url: "/login",
         method: "post",
         body: userAuthenticationData,
       });
-      return userData;
+      return response.data;
     } catch (error: any) {
       return rejectWithValue(error.response.data);
     }
@@ -49,11 +50,11 @@ export const getUserData = createAsyncThunk(
   async (_, { rejectWithValue }) => {
     try {
       const userId = getUserId();
-      const userData: IUserData = await api.fetchRequest({
+      const response: AxiosResponse<IUserData> = await api.fetchRequest({
         url: `/users/${userId}`,
         method: "get",
       });
-      return userData;
+      return response.data;
     } catch (error: any) {
       return rejectWithValue(error.response.data);
     }

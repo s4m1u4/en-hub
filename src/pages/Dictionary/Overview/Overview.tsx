@@ -13,59 +13,65 @@ import { TextTitle } from "./Overview.styles";
 export const Overview: FC = () => {
   const { words } = useAppSelector((state) => state.dictionary);
 
+  const wordCount = words.length;
   const newWordCount = getWordCountByState(words, "new");
   const learningWordCount = getWordCountByState(words, "learning");
   const learnedWordCount = getWordCountByState(words, "learned");
 
   return (
-    <Box>
+    <Box
+      sx={{
+        gap: "1rem",
+        display: "flex",
+        flexDirection: "column",
+        alignItems: "flex-start",
+      }}
+    >
       <TextTitle>My dictionary</TextTitle>
       <Grid container spacing={2}>
         <Grid item xs={4}>
           <Card
             component={Link}
-            to="/dictionary/words"
-            sx={{ display: "flex", height: "100%" }}
+            to={"/dictionary/sets/my"}
+            sx={{ height: "100%", display: "flex", alignItems: "center" }}
           >
             <CardContent
               sx={{
+                gap: "1rem",
                 display: "flex",
                 alignItems: "center",
+                width: "100%",
               }}
             >
-              <Box
-                sx={{ height: "100%", display: "flex", alignItems: "center" }}
-              >
-                <MenuBookRoundedIcon
-                  sx={{ mr: 1, color: grey[700] }}
-                  fontSize="large"
-                />
-                <Box>
-                  <Typography variant="subtitle2">
-                    Word count: {words.length}
-                  </Typography>
-                  <Typography sx={{ color: blue[500] }} variant="body2">
-                    View
-                  </Typography>
-                </Box>
+              <MenuBookRoundedIcon
+                sx={{ color: green[500], fontSize: "65px" }}
+              />
+              <Box>
+                <Typography variant="subtitle2">
+                  Word count: {wordCount}
+                </Typography>
+                <Typography sx={{ color: blue[500] }} variant="body2">
+                  View
+                </Typography>
               </Box>
             </CardContent>
           </Card>
         </Grid>
         <Grid item xs={8}>
-          <Card sx={{ height: "100%" }}>
+          <Card sx={{ height: "100%", display: "flex", alignItems: "center" }}>
             <CardContent
               sx={{
-                height: "100%",
+                width: "100%",
                 display: "flex",
                 alignItems: "center",
                 justifyContent: "space-between",
               }}
             >
-              <Box sx={{ display: "flex", alignItems: "center" }}>
+              <Box
+                sx={{ gap: "0.5rem", display: "flex", alignItems: "center" }}
+              >
                 <EmojiObjectsRoundedIcon
-                  sx={{ mr: 1, color: grey[500] }}
-                  fontSize="large"
+                  sx={{ color: grey[500], fontSize: "35px" }}
                 />
                 <Box>
                   <Typography variant="body2">New words</Typography>
@@ -74,10 +80,11 @@ export const Overview: FC = () => {
                   </Typography>
                 </Box>
               </Box>
-              <Box sx={{ display: "flex", alignItems: "center" }}>
+              <Box
+                sx={{ gap: "0.5rem", display: "flex", alignItems: "center" }}
+              >
                 <EmojiObjectsRoundedIcon
-                  sx={{ mr: 1, color: orange[500] }}
-                  fontSize="large"
+                  sx={{ color: orange[500], fontSize: "35px" }}
                 />
                 <Box>
                   <Typography variant="body2">Learning</Typography>
@@ -86,10 +93,11 @@ export const Overview: FC = () => {
                   </Typography>
                 </Box>
               </Box>
-              <Box sx={{ display: "flex", alignItems: "center" }}>
+              <Box
+                sx={{ gap: "0.5rem", display: "flex", alignItems: "center" }}
+              >
                 <EmojiObjectsRoundedIcon
-                  sx={{ mr: 1, color: green[500] }}
-                  fontSize="large"
+                  sx={{ color: green[500], fontSize: "35px" }}
                 />
                 <Box>
                   <Typography variant="body2">Learned</Typography>

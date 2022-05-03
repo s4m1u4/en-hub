@@ -1,4 +1,5 @@
 import React, { ChangeEvent, FC, MouseEvent, useState } from "react";
+import { useParams } from "react-router-dom";
 import EmojiObjectsRoundedIcon from "@mui/icons-material/EmojiObjectsRounded";
 import {
   Box,
@@ -13,6 +14,7 @@ import { green, grey, orange } from "@mui/material/colors";
 import { useAppDispatch, useAppSelector } from "hooks";
 import { ModalAddWord } from "pages/Dictionary";
 import {
+  setPage,
   getWords,
   setStateValue,
   setSearchValue,
@@ -20,6 +22,7 @@ import {
 
 export const Filters: FC = () => {
   const dispatch = useAppDispatch();
+  const { setId } = useParams();
   const { searchValue, stateValue } = useAppSelector(
     (state) => state.dictionary
   );
@@ -33,8 +36,11 @@ export const Filters: FC = () => {
     newStateValue: string
   ) => {
     if (newStateValue !== null) {
+      dispatch(setPage(1));
       dispatch(
         getWords({
+          setId,
+          limit: 10,
           searchValue,
           stateValue: dispatch(setStateValue(newStateValue)).payload,
         })
@@ -43,8 +49,11 @@ export const Filters: FC = () => {
   };
 
   const handleSearchWords = (event: ChangeEvent<HTMLInputElement>) => {
+    dispatch(setPage(1));
     dispatch(
       getWords({
+        setId,
+        limit: 10,
         searchValue: dispatch(setSearchValue(event.target.value)).payload,
         stateValue,
       })
@@ -72,7 +81,7 @@ export const Filters: FC = () => {
           variant="contained"
           onClick={handleOpenModalAddWord}
         >
-          Add
+          Add word
         </Button>
         <ModalAddWord
           open={openModalAddWord}

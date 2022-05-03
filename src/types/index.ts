@@ -30,3 +30,10 @@ export interface IWord {
   translationWord: string;
   stateWord: "new" | "learning" | "learned";
 }
+
+export interface ISet {
+  id: string;
+  permanent: boolean;
+  title: string;
+  user: "admin" | string | number;
+}

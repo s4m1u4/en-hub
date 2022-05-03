@@ -1,5 +1,6 @@
 import React, { useEffect } from "react";
 import { BrowserRouter } from "react-router-dom";
+import { createTheme, CssBaseline, ThemeProvider } from "@mui/material";
 
 import { Header } from "components";
 import { RoutesList } from "routes";
@@ -16,10 +17,23 @@ export const App = () => {
     }
   }, [dispatch, isAuth]);
 
+  const selectedTheme = createTheme({
+    palette: {
+      mode: "light",
+      background: {
+        default: "#fafafa",
+        paper: "#ffffff",
+      },
+    },
+  });
+
   return (
-    <BrowserRouter>
-      {isAuth && <Header />}
-      <RoutesList />
-    </BrowserRouter>
+    <ThemeProvider theme={selectedTheme}>
+      <CssBaseline />
+      <BrowserRouter>
+        {isAuth && <Header />}
+        <RoutesList />
+      </BrowserRouter>
+    </ThemeProvider>
   );
 };

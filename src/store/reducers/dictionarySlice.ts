@@ -3,7 +3,50 @@ import { createAsyncThunk, createSlice, PayloadAction } from "@reduxjs/toolkit";
 import { api } from "services/api";
 import { getUserId } from "helpers";
 import { IDictionaryState } from "store/types";
-import { IWord } from "types";
+import { ISet, IWord } from "types";
+import { AxiosResponse } from "axios";
+
+export const getWords = createAsyncThunk(
+  "dictionary/getWords",
+  async (
+    {
+      page,
+      limit,
+      setId,
+      searchValue,
+      stateValue,
+    }: {
+      page?: number;
+      limit?: number;
+      setId?: string | number;
+      searchValue?: string;
+      stateValue?: string;
+    },
+    { rejectWithValue }
+  ) => {
+    try {
+      const userId = getUserId();
+      const response: AxiosResponse<IWord[]> = await api.fetchRequest({
+        url: `/words`,
+        method: "get",
+        params: {
+          _limit: limit,
+          _page: page,
+          user: userId,
+          set: setId === "my" ? null : setId,
+          originalWord_like: searchValue || null,
+          stateWord_like: stateValue || null,
+        },
+      });
+      return {
+        data: response.data,
+        countWord: response.headers["x-total-count"],
+      };
+    } catch (error: any) {
+      return rejectWithValue(error.response.data);
+    }
+  }
+);
 
 export const addWord = createAsyncThunk(
   "dictionary/addWord",
@@ -54,24 +97,49 @@ export const changeStateWord = createAsyncThunk(
   }
 );
 
-export const getWords = createAsyncThunk(
-  "dictionary/getWords",
-  async (
-    { searchValue, stateValue }: { searchValue?: string; stateValue?: string },
-    { rejectWithValue }
-  ) => {
+export const getSets = createAsyncThunk(
+  "dictionary/getSets",
+  async ({ setId }: { setId?: string | number }, { rejectWithValue }) => {
     try {
       const userId = getUserId();
-      const words: IWord[] = await api.fetchRequest({
-        url: `/words`,
+      const response: AxiosResponse<ISet[]> = await api.fetchRequest({
+        url: "/sets?user=admin",
         method: "get",
         params: {
           user: userId,
-          originalWord_like: searchValue,
-          stateWord_like: stateValue,
+          id: setId || null,
         },
       });
-      return words;
+      return response.data;
+    } catch (error: any) {
+      return rejectWithValue(error.response.data);
+    }
+  }
+);
+
+export const addSet = createAsyncThunk(
+  "dictionary/addSet",
+  async (setData: ISet, { rejectWithValue }) => {
+    try {
+      await api.fetchRequest({
+        url: "/sets",
+        method: "post",
+        body: setData,
+      });
+    } catch (error: any) {
+      return rejectWithValue(error.response.data);
+    }
+  }
+);
+
+export const deleteSet = createAsyncThunk(
+  "dictionary/deleteSet",
+  async (setId: string | number, { rejectWithValue }) => {
+    try {
+      await api.fetchRequest({
+        url: `/sets/${setId}`,
+        method: "delete",
+      });
     } catch (error: any) {
       return rejectWithValue(error.response.data);
     }
@@ -79,6 +147,9 @@ export const getWords = createAsyncThunk(
 );
 
 const initialState: IDictionaryState = {
+  page: 1,
+  countPage: 0,
+  sets: [],
   words: [],
   isLoading: false,
   error: "",
@@ -90,6 +161,10 @@ const dictionarySlice = createSlice({
   name: "dictionary",
   initialState,
   reducers: {
+    resetState: () => initialState,
+    setPage: (state, action: PayloadAction<number>) => {
+      state.page = action.payload;
+    },
     setSearchValue: (state, action: PayloadAction<string>) => {
       state.searchValue = action.payload;
     },
@@ -102,8 +177,12 @@ const dictionarySlice = createSlice({
     [getWords.pending.type]: (state) => {
       state.isLoading = true;
     },
-    [getWords.fulfilled.type]: (state, action: PayloadAction<IWord[]>) => {
-      state.words = action.payload;
+    [getWords.fulfilled.type]: (
+      state,
+      action: PayloadAction<{ data: IWord[]; countWord: number }>
+    ) => {
+      state.words = action.payload.data;
+      state.countPage = Math.ceil(action.payload.countWord / 10);
       state.error = "";
       state.isLoading = false;
     },
@@ -130,8 +209,41 @@ const dictionarySlice = createSlice({
     [deleteWord.rejected.type]: (state) => {
       state.isLoading = false;
     },
+    // GET SETS
+    [getSets.pending.type]: (state) => {
+      state.isLoading = true;
+    },
+    [getSets.fulfilled.type]: (state, action: PayloadAction<ISet[]>) => {
+      state.sets = action.payload;
+      state.error = "";
+      state.isLoading = false;
+    },
+    [getSets.rejected.type]: (state) => {
+      state.isLoading = false;
+    },
+    // ADD SET
+    [addSet.pending.type]: (state) => {
+      state.isLoading = true;
+    },
+    [addSet.fulfilled.type]: (state) => {
+      state.isLoading = false;
+    },
+    [addSet.rejected.type]: (state) => {
+      state.isLoading = false;
+    },
+    // DELETE SET
+    [deleteSet.pending.type]: (state) => {
+      state.isLoading = true;
+    },
+    [deleteSet.fulfilled.type]: (state) => {
+      state.isLoading = false;
+    },
+    [deleteSet.rejected.type]: (state) => {
+      state.isLoading = false;
+    },
   },
 });
 
-export const { setSearchValue, setStateValue } = dictionarySlice.actions;
+export const { setPage, resetState, setStateValue, setSearchValue } =
+  dictionarySlice.actions;
 export default dictionarySlice.reducer;

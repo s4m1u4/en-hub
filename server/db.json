@@ -8,41 +8,209 @@
       "gender": "male",
       "age": 21,
       "id": 1
+    },
+    {
+      "email": "totalgol2014@gmail.com",
+      "password": "$2a$10$.lqPj9OAXvBSxM8uh6jW0eiaAdsbx5JIGtEKfhyUrWYXVvrZwVlEm",
+      "firstName": "Nika",
+      "lastName": "Samitashvili",
+      "gender": "female",
+      "age": 20,
+      "id": 2
     }
   ],
   "words": [
     {
-      "id": 2,
-      "set": 1,
+      "id": 1,
+      "set": "my",
       "user": 1,
       "stateWord": "new",
-      "originalWord": "Box",
-      "translationWord": "Коробка"
+      "originalWord": "advice",
+      "translationWord": "совет"
+    },
+    {
+      "id": 2,
+      "set": "my",
+      "user": 1,
+      "stateWord": "learning",
+      "originalWord": "again",
+      "translationWord": "опять"
     },
     {
       "id": 3,
-      "set": 1,
+      "set": "my",
       "user": 1,
-      "stateWord": "new",
-      "originalWord": "Water",
-      "translationWord": "Вода"
+      "stateWord": "learning",
+      "originalWord": "buy",
+      "translationWord": "купит"
     },
     {
       "id": 4,
-      "set": 1,
+      "set": "my",
       "user": 1,
       "stateWord": "learning",
-      "originalWord": "Car",
-      "translationWord": "Машина"
+      "originalWord": "catch",
+      "translationWord": "ловить"
     },
     {
       "id": 5,
-      "set": 1,
+      "set": "my",
+      "user": 1,
+      "stateWord": "learning",
+      "originalWord": "colour",
+      "translationWord": "цвет"
+    },
+    {
+      "id": 6,
+      "set": "jungle",
+      "user": 1,
+      "stateWord": "learning",
+      "originalWord": "girl",
+      "translationWord": "девочка"
+    },
+    {
+      "id": 7,
+      "set": "jungle",
       "user": 1,
       "stateWord": "learned",
-      "originalWord": "Weather",
-      "translationWord": "Погода"
+      "originalWord": "have",
+      "translationWord": "иметь"
+    },
+    {
+      "id": 8,
+      "set": "jungle",
+      "user": 1,
+      "stateWord": "learned",
+      "originalWord": "letter",
+      "translationWord": "письмо"
+    },
+    {
+      "id": 9,
+      "set": "my",
+      "user": 2,
+      "stateWord": "new",
+      "originalWord": "Nika",
+      "translationWord": "Ника"
+    },
+    {
+      "id": 10,
+      "set": "jungle",
+      "user": 1,
+      "stateWord": "learned",
+      "originalWord": "money",
+      "translationWord": "деньги"
+    },
+    {
+      "id": 11,
+      "set": "bsXmIUS",
+      "user": 1,
+      "stateWord": "learning",
+      "originalWord": "book",
+      "translationWord": "книга"
+    },
+    {
+      "id": 12,
+      "set": "bsXmIUS",
+      "user": 1,
+      "stateWord": "learning",
+      "originalWord": "map",
+      "translationWord": "карта"
+    },
+    {
+      "id": 13,
+      "set": "B2NOeTE",
+      "user": 2,
+      "stateWord": "new",
+      "originalWord": "backpack",
+      "translationWord": "рюкзак"
+    },
+    {
+      "id": 14,
+      "set": "MaxXGGV",
+      "user": 1,
+      "stateWord": "new",
+      "originalWord": "ball",
+      "translationWord": "мяч"
+    },
+    {
+      "id": 15,
+      "set": "my",
+      "user": 1,
+      "stateWord": "new",
+      "originalWord": "red",
+      "translationWord": "красный"
+    },
+    {
+      "id": 16,
+      "set": "jungle",
+      "user": 1,
+      "stateWord": "learning",
+      "originalWord": "bike",
+      "translationWord": "велосипед"
+    },
+    {
+      "id": 17,
+      "set": "fOKzPqI",
+      "user": 1,
+      "stateWord": "new",
+      "originalWord": "pen",
+      "translationWord": "ручка"
+    },
+    {
+      "id": 18,
+      "set": "fOKzPqI",
+      "user": 1,
+      "stateWord": "learning",
+      "originalWord": "note",
+      "translationWord": "тетрадь"
+    },
+    {
+      "id": 19,
+      "set": "jungle",
+      "user": 1,
+      "stateWord": "new",
+      "originalWord": "buy",
+      "translationWord": "покупать"
+    },
+    {
+      "id": 20,
+      "set": "C_59vyB",
+      "user": 1,
+      "stateWord": "new",
+      "originalWord": "hello world",
+      "translationWord": "привет мир"
     }
   ],
-  "sets": []
+  "sets": [
+    {
+      "id": "my",
+      "user": "admin",
+      "permanent": true,
+      "title": "My dictionary"
+    },
+    {
+      "id": "jungle",
+      "user": "admin",
+      "permanent": true,
+      "title": "Words from jungle"
+    },
+    {
+      "id": "B2NOeTE",
+      "title": "Travel",
+      "user": 2,
+      "permanent": false
+    },
+    {
+      "id": "MaxXGGV",
+      "title": "Sport",
+      "user": 1,
+      "permanent": false
+    },
+    {
+      "id": "fOKzPqI",
+      "title": "School",
+      "user": 1,
+      "permanent": false
+    }
+  ]
 }

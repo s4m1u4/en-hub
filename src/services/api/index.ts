@@ -15,7 +15,7 @@ class Api implements IApi {
       baseURL: "http://localhost:5000",
     };
     const response: AxiosResponse = await axios(config);
-    return response.data;
+    return response;
   };
 }
 

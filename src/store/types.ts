@@ -1,5 +1,5 @@
 import { store } from "./store";
-import { IUserData, IWord } from "types";
+import { ISet, IUserData, IWord } from "types";
 
 export interface IUserState {
   user: IUserData;
@@ -9,7 +9,10 @@ export interface IUserState {
 }
 
 export interface IDictionaryState {
+  page: number;
+  countPage: number;
   words: IWord[];
+  sets: ISet[];
   isLoading: boolean;
   error: string;
   searchValue: string;

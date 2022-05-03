@@ -1,28 +1,45 @@
 import React, { FC, useEffect } from "react";
-import { Container } from "@mui/material";
+import { Box, CircularProgress, Container } from "@mui/material";
+import { green } from "@mui/material/colors";
 
-import { Overview } from "pages/Dictionary";
-import {
-  getWords,
-  setStateValue,
-  setSearchValue,
-} from "store/reducers/dictionarySlice";
-import { useAppDispatch } from "hooks";
+import { Overview, Sets } from "pages/Dictionary";
+import { getSets, getWords } from "store/reducers/dictionarySlice";
+import { useAppDispatch, useAppSelector } from "hooks";
 
 export const Dictionary: FC = () => {
   const dispatch = useAppDispatch();
+  const { isLoading } = useAppSelector((state) => state.dictionary);
 
   useEffect(() => {
     dispatch(getWords({}));
-    return () => {
-      dispatch(setSearchValue(""));
-      dispatch(setStateValue(""));
-    };
+    dispatch(getSets({}));
   }, [dispatch]);
 
   return (
     <Container sx={{ py: 2 }}>
-      <Overview />
+      {isLoading ? (
+        <Box
+          sx={{
+            position: "fixed",
+            top: "50%",
+            left: "50%",
+            transform: "translate(-50%, -50%)",
+          }}
+        >
+          <CircularProgress sx={{ color: green[500] }} />
+        </Box>
+      ) : (
+        <Box
+          sx={{
+            gap: "1rem",
+            display: "flex",
+            flexDirection: "column",
+          }}
+        >
+          <Overview />
+          <Sets />
+        </Box>
+      )}
     </Container>
   );
 };
