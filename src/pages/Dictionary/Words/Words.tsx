@@ -25,7 +25,7 @@ export const Words: FC = () => {
     (state) => state.word
   );
 
-  const { data, isLoading } = useGetWordsQuery(
+  const { data, isLoading: isLoadingWords } = useGetWordsQuery(
     {
       userId,
       setId,
@@ -63,14 +63,8 @@ export const Words: FC = () => {
         <TextTitle>{currentSet?.title}</TextTitle>
       </Box>
       <Filters />
-      {isLoading ? (
-        <Box
-          sx={{
-            py: 4,
-            display: "flex",
-            justifyContent: "center",
-          }}
-        >
+      {isLoadingWords ? (
+        <Box sx={{ py: 4, display: "flex", justifyContent: "center" }}>
           <CircularProgress sx={{ color: green[500] }} />
         </Box>
       ) : data?.words?.length ? (

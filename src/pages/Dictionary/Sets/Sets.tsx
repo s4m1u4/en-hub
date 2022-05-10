@@ -1,44 +1,48 @@
 import React, { FC, useState } from "react";
-import { Box, Button } from "@mui/material";
+import { Box, Button, CircularProgress } from "@mui/material";
+import { green } from "@mui/material/colors";
 
 import { ModalAddSet } from "pages/Dictionary/ModalAddSet";
 import { SetsList } from "pages/Dictionary/SetsList";
+import { ISet } from "types";
 
 import { TextTitle } from "./Sets.styles";
-import { ISet } from "types";
 
 interface ISetsProps {
   sets: ISet[] | undefined;
+  isLoading: boolean;
 }
 
-export const Sets: FC<ISetsProps> = ({ sets }) => {
+export const Sets: FC<ISetsProps> = ({ sets, isLoading }) => {
   const [openModalAddSet, setModalOpenAddSet] = useState<boolean>(false);
 
   const handleOpenModalAddSet = () => setModalOpenAddSet(true);
   const handleCloseModalAddSet = () => setModalOpenAddSet(false);
 
   return (
-    <Box
-      sx={{
-        gap: "1rem",
-        display: "flex",
-        flexDirection: "column",
-        alignItems: "flex-start",
-      }}
-    >
+    <Box sx={{ gap: "1rem", display: "flex", flexDirection: "column" }}>
       <TextTitle>Sets</TextTitle>
-      <Button
-        color="primary"
-        variant="contained"
-        onClick={handleOpenModalAddSet}
-      >
-        Add new set
-      </Button>
-      <ModalAddSet
-        open={openModalAddSet}
-        handleClose={handleCloseModalAddSet}
-      />
-      <SetsList sets={sets} />
+      {isLoading ? (
+        <Box sx={{ py: 4, display: "flex", justifyContent: "center" }}>
+          <CircularProgress sx={{ color: green[500] }} />
+        </Box>
+      ) : (
+        <>
+          <Button
+            color="primary"
+            variant="contained"
+            sx={{ alignSelf: "flex-start" }}
+            onClick={handleOpenModalAddSet}
+          >
+            Add new set
+          </Button>
+          <ModalAddSet
+            open={openModalAddSet}
+            handleClose={handleCloseModalAddSet}
+          />
+          <SetsList sets={sets} />
+        </>
+      )}
     </Box>
   );
 };

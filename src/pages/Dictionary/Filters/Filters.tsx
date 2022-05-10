@@ -14,7 +14,7 @@ import { useActions, useAppSelector } from "hooks";
 import { ModalAddWord } from "pages/Dictionary";
 
 export const Filters: FC = () => {
-  const { setPage, setStateValue, setSearchValue, resetState } = useActions();
+  const { setPage, setStateValue, setSearchValue } = useActions();
 
   const { stateValue } = useAppSelector((state) => state.word);
 
