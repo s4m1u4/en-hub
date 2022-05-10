@@ -3,11 +3,10 @@ import { useFormik } from "formik";
 import { useParams } from "react-router-dom";
 import { Button, Grid, TextField } from "@mui/material";
 
-import { ModalComponent } from "components/shared";
+import { useAddWordMutation } from "store/reducers/word/wordApi";
 import { ModalAddWordSchema } from "./ModalAddWordSchema";
-import { useAppDispatch, useAppSelector } from "hooks";
+import { ModalComponent } from "components/shared";
 import { getUserId } from "helpers";
-import { addWord, getWords } from "store/reducers/dictionarySlice";
 import { IWord } from "types";
 
 import { ModalTitle } from "./ModalAddWord.styles";
@@ -19,11 +18,15 @@ interface IModalAddWordProps {
 
 export const ModalAddWord: FC<IModalAddWordProps> = ({ open, handleClose }) => {
   const userId = getUserId();
-  const dispatch = useAppDispatch();
   const { setId } = useParams();
-  const { page, searchValue, stateValue } = useAppSelector(
-    (state) => state.dictionary
-  );
+
+  const [addWord] = useAddWordMutation();
+
+  const handleSubmit = async (values: IWord) => {
+    await addWord(values);
+    formik.resetForm();
+    handleClose();
+  };
 
   const formik = useFormik({
     initialValues: {
@@ -36,14 +39,7 @@ export const ModalAddWord: FC<IModalAddWordProps> = ({ open, handleClose }) => {
     },
     enableReinitialize: true,
     validationSchema: ModalAddWordSchema,
-    onSubmit: async (values: IWord) => {
-      await dispatch(addWord(values));
-      await dispatch(
-        getWords({ searchValue, stateValue, setId, page, limit: 10 })
-      );
-      formik.resetForm();
-      handleClose();
-    },
+    onSubmit: handleSubmit,
   });
 
   return (

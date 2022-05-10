@@ -1,15 +1,18 @@
 import React, { FC, useState } from "react";
 import { Box, Button } from "@mui/material";
 
+import { ModalAddSet } from "pages/Dictionary/ModalAddSet";
 import { SetsList } from "pages/Dictionary/SetsList";
-import { useAppSelector } from "hooks";
 
 import { TextTitle } from "./Sets.styles";
-import { ModalAddSet } from "pages/Dictionary/ModalAddSet";
+import { ISet } from "types";
 
-export const Sets: FC = () => {
+interface ISetsProps {
+  sets: ISet[] | undefined;
+}
+
+export const Sets: FC<ISetsProps> = ({ sets }) => {
   const [openModalAddSet, setModalOpenAddSet] = useState<boolean>(false);
-  const { sets } = useAppSelector((state) => state.dictionary);
 
   const handleOpenModalAddSet = () => setModalOpenAddSet(true);
   const handleCloseModalAddSet = () => setModalOpenAddSet(false);

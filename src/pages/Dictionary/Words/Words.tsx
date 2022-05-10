@@ -1,4 +1,4 @@
-import React, { ChangeEvent, FC, useEffect } from "react";
+import React, { ChangeEvent, FC } from "react";
 import { useParams } from "react-router-dom";
 import { green } from "@mui/material/colors";
 import {
@@ -10,39 +10,45 @@ import {
 } from "@mui/material";
 
 import { Filters, WordsList } from "pages/Dictionary";
-import { useAppDispatch, useAppSelector } from "hooks";
-import {
-  getSets,
-  getWords,
-  resetState,
-  setPage,
-} from "store/reducers/dictionarySlice";
+import { useActions, useAppSelector } from "hooks";
+import { useGetWordsQuery } from "store/reducers/word/wordApi";
+import { useGetSetsQuery } from "store/reducers/set/setApi";
+import { getUserId } from "helpers";
 
 import { TextTitle } from "./Words.styles";
 
 export const Words: FC = () => {
-  const dispatch = useAppDispatch();
   const { setId } = useParams();
-  const { page, countPage, words, sets, isLoading, searchValue, stateValue } =
-    useAppSelector((state) => state.dictionary);
+  const userId = getUserId();
+  const { setPage } = useActions();
+  const { limit, page, countPage, searchValue, stateValue } = useAppSelector(
+    (state) => state.word
+  );
 
-  const currentSet = sets.find((set) => set.id === setId);
+  const { data, isLoading } = useGetWordsQuery(
+    {
+      userId,
+      setId,
+      limit,
+      page,
+      searchValue,
+      stateValue,
+    },
+    { refetchOnMountOrArgChange: true }
+  );
+  const { data: sets } = useGetSetsQuery(
+    { userId },
+    { refetchOnMountOrArgChange: true }
+  );
+
+  const currentSet = sets?.find((set) => set.id === setId);
 
   const handleChangePage = async (
     event: ChangeEvent<unknown>,
     page: number
   ) => {
-    await dispatch(getWords({ page, limit: 10, searchValue, stateValue }));
-    dispatch(setPage(page));
+    setPage(page);
   };
-
-  useEffect(() => {
-    dispatch(getWords({ setId, limit: 10 }));
-    dispatch(getSets({}));
-    return () => {
-      dispatch(resetState());
-    };
-  }, [dispatch, setId]);
 
   return (
     <Container sx={{ py: 2 }}>
@@ -67,8 +73,8 @@ export const Words: FC = () => {
         >
           <CircularProgress sx={{ color: green[500] }} />
         </Box>
-      ) : words.length ? (
-        <WordsList words={words} />
+      ) : data?.words?.length ? (
+        <WordsList words={data?.words} sets={sets} />
       ) : (
         <Typography variant="subtitle1">Word list is empty ☹️</Typography>
       )}

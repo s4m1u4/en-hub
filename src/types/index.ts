@@ -1,9 +1,9 @@
-export interface IUserAuthenticationData {
+export interface IAuthenticationData {
   email: string;
   password: string;
 }
 
-export interface IUserRegistrationData {
+export interface IRegistrationData {
   email: string;
   password: string;
   firstName: string;
@@ -12,7 +12,7 @@ export interface IUserRegistrationData {
   age: string | number;
 }
 
-export interface IUserData {
+export interface IUser {
   id: string | number;
   email: string;
   password: string;

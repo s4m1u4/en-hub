@@ -7,10 +7,10 @@ import { IWord } from "types";
 import { ModalTitle, TextWord } from "./ModalDeleteWord.styles";
 
 interface IModalDeleteWordProps {
-  word: IWord;
+  word: IWord | undefined;
   open: boolean;
   handleClose: () => void;
-  handleDeleteWord: (wordId: string | number) => void;
+  handleDeleteWord: (wordId: string | number | undefined) => void;
 }
 
 export const ModalDeleteWord: FC<IModalDeleteWordProps> = ({
@@ -23,7 +23,7 @@ export const ModalDeleteWord: FC<IModalDeleteWordProps> = ({
     <ModalComponent open={open} onClose={handleClose}>
       <ModalTitle>Do you want to delete the word?</ModalTitle>
       <TextWord>
-        <span>{word.originalWord}</span> - {word.translationWord}
+        <span>{word?.originalWord}</span> - {word?.translationWord}
       </TextWord>
       <Grid container spacing={2}>
         <Grid item xs={6}>
@@ -31,7 +31,7 @@ export const ModalDeleteWord: FC<IModalDeleteWordProps> = ({
             fullWidth
             color="error"
             variant="contained"
-            onClick={() => handleDeleteWord(word.id)}
+            onClick={() => handleDeleteWord(word?.id)}
           >
             Delete
           </Button>

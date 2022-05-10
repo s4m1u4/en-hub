@@ -11,31 +11,35 @@ import {
 import DeleteRoundedIcon from "@mui/icons-material/DeleteRounded";
 import { grey } from "@mui/material/colors";
 
-import { ISet } from "types";
-import { useAppDispatch, useAppSelector } from "hooks";
-import { deleteSet, getSets, resetState } from "store/reducers/dictionarySlice";
+import { useDeleteSetMutation } from "store/reducers/set/setApi";
+import { useGetWordsQuery } from "store/reducers/word/wordApi";
 import { ModalDeleteSet } from "pages/Dictionary";
+import { getUserId } from "helpers";
+import { useActions } from "hooks";
+import { ISet } from "types";
 
 interface ISetsItem {
   set: ISet;
 }
 
 export const SetsItem: FC<ISetsItem> = ({ set }) => {
-  const dispatch = useAppDispatch();
-  const { words } = useAppSelector((state) => state.dictionary);
+  const userId = getUserId();
+
+  const { resetState } = useActions();
+  const { data } = useGetWordsQuery({ userId });
+  const [deleteSet] = useDeleteSetMutation();
 
   const [openModalDeleteSet, setModalOpenDeleteSet] = useState<boolean>(false);
 
   const handleOpenModalDeleteSet = () => setModalOpenDeleteSet(true);
   const handleCloseModalDeleteSet = () => setModalOpenDeleteSet(false);
 
-  const handleDeleteSet = async (setId: string | number) => {
-    await dispatch(deleteSet(setId));
-    await dispatch(getSets({}));
+  const handleDeleteSet = async (setId: string) => {
+    await deleteSet(setId);
     handleCloseModalDeleteSet();
   };
 
-  const wordCount = words.filter((word) => word.set === set.id).length;
+  const wordCount = data?.words?.filter((word) => word.set === set.id).length;
 
   return (
     <Grid item xs={4}>
@@ -49,7 +53,7 @@ export const SetsItem: FC<ISetsItem> = ({ set }) => {
         <CardContent
           component={Link}
           to={`/dictionary/sets/${set.id}`}
-          onClick={() => dispatch(resetState())}
+          onClick={() => resetState()}
           sx={{
             gap: "0.5rem",
             flexDirection: "column",
@@ -65,7 +69,7 @@ export const SetsItem: FC<ISetsItem> = ({ set }) => {
             {set.title}
           </Typography>
           <Typography variant="subtitle2">
-            Word count: {set.id === "my" ? words.length : wordCount}
+            Word count: {set.id === "my" ? data?.words?.length : wordCount}
           </Typography>
         </CardContent>
         {!set.permanent && (

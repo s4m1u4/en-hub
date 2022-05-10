@@ -10,7 +10,7 @@ interface IModalDeleteSetProps {
   set: ISet;
   open: boolean;
   handleClose: () => void;
-  handleDeleteSet: (setId: string | number) => void;
+  handleDeleteSet: (setId: string) => void;
 }
 
 export const ModalDeleteSet: FC<IModalDeleteSetProps> = ({

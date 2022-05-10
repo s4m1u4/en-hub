@@ -2,10 +2,9 @@ import React, { FC } from "react";
 import { useFormik } from "formik";
 import { Button, Grid, TextField } from "@mui/material";
 
-import { ModalComponent } from "components/shared";
+import { useAddSetMutation } from "store/reducers/set/setApi";
 import { ModalAddSetSchema } from "./ModalAddSetSchema";
-import { addSet, getSets } from "store/reducers/dictionarySlice";
-import { useAppDispatch } from "hooks";
+import { ModalComponent } from "components/shared";
 import { getUserId } from "helpers";
 import { ISet } from "types";
 
@@ -18,7 +17,14 @@ interface IModalAddSetProps {
 
 export const ModalAddSet: FC<IModalAddSetProps> = ({ open, handleClose }) => {
   const userId = getUserId();
-  const dispatch = useAppDispatch();
+
+  const [addSet] = useAddSetMutation();
+
+  const handleSubmit = async (values: ISet) => {
+    await addSet(values);
+    formik.resetForm();
+    handleClose();
+  };
 
   const formik = useFormik({
     initialValues: {
@@ -28,12 +34,7 @@ export const ModalAddSet: FC<IModalAddSetProps> = ({ open, handleClose }) => {
       permanent: false,
     },
     validationSchema: ModalAddSetSchema,
-    onSubmit: async (values: ISet) => {
-      await dispatch(addSet(values));
-      await dispatch(getSets({}));
-      formik.resetForm();
-      handleClose();
-    },
+    onSubmit: handleSubmit,
   });
 
   return (

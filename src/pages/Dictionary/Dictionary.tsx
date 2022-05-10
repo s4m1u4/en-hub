@@ -1,19 +1,23 @@
-import React, { FC, useEffect } from "react";
+import React, { FC } from "react";
 import { Box, CircularProgress, Container } from "@mui/material";
 import { green } from "@mui/material/colors";
 
+import { useGetWordsQuery } from "store/reducers/word/wordApi";
+import { useGetSetsQuery } from "store/reducers/set/setApi";
 import { Overview, Sets } from "pages/Dictionary";
-import { getSets, getWords } from "store/reducers/dictionarySlice";
-import { useAppDispatch, useAppSelector } from "hooks";
+import { getUserId } from "helpers";
 
 export const Dictionary: FC = () => {
-  const dispatch = useAppDispatch();
-  const { isLoading } = useAppSelector((state) => state.dictionary);
+  const userId = getUserId();
 
-  useEffect(() => {
-    dispatch(getWords({}));
-    dispatch(getSets({}));
-  }, [dispatch]);
+  const { data, isLoading } = useGetWordsQuery(
+    { userId },
+    { refetchOnMountOrArgChange: true }
+  );
+  const { data: sets } = useGetSetsQuery(
+    { userId },
+    { refetchOnMountOrArgChange: true }
+  );
 
   return (
     <Container sx={{ py: 2 }}>
@@ -36,8 +40,8 @@ export const Dictionary: FC = () => {
             flexDirection: "column",
           }}
         >
-          <Overview />
-          <Sets />
+          <Overview words={data?.words} />
+          <Sets sets={sets} />
         </Box>
       )}
     </Container>

@@ -24,7 +24,7 @@
       "id": 1,
       "set": "my",
       "user": 1,
-      "stateWord": "new",
+      "stateWord": "learning",
       "originalWord": "advice",
       "translationWord": "совет"
     },
@@ -125,14 +125,6 @@
       "translationWord": "рюкзак"
     },
     {
-      "id": 14,
-      "set": "MaxXGGV",
-      "user": 1,
-      "stateWord": "new",
-      "originalWord": "ball",
-      "translationWord": "мяч"
-    },
-    {
       "id": 15,
       "set": "my",
       "user": 1,
@@ -152,7 +144,7 @@
       "id": 17,
       "set": "fOKzPqI",
       "user": 1,
-      "stateWord": "new",
+      "stateWord": "learning",
       "originalWord": "pen",
       "translationWord": "ручка"
     },
@@ -179,6 +171,78 @@
       "stateWord": "new",
       "originalWord": "hello world",
       "translationWord": "привет мир"
+    },
+    {
+      "id": 21,
+      "set": "MaxXGGV",
+      "user": "1",
+      "stateWord": "new",
+      "originalWord": "ball",
+      "translationWord": "мяч"
+    },
+    {
+      "id": 22,
+      "set": "fOKzPqI",
+      "user": "1",
+      "stateWord": "new",
+      "originalWord": "1",
+      "translationWord": "1"
+    },
+    {
+      "id": 23,
+      "set": "fOKzPqI",
+      "user": "1",
+      "stateWord": "new",
+      "originalWord": "1",
+      "translationWord": "1"
+    },
+    {
+      "id": 24,
+      "set": "fOKzPqI",
+      "user": "1",
+      "stateWord": "new",
+      "originalWord": "1",
+      "translationWord": "1"
+    },
+    {
+      "id": 25,
+      "set": "fOKzPqI",
+      "user": "1",
+      "stateWord": "new",
+      "originalWord": "1",
+      "translationWord": "1"
+    },
+    {
+      "id": 26,
+      "set": "fOKzPqI",
+      "user": "1",
+      "stateWord": "new",
+      "originalWord": "1",
+      "translationWord": "1"
+    },
+    {
+      "id": 27,
+      "set": "fOKzPqI",
+      "user": "1",
+      "stateWord": "new",
+      "originalWord": "1",
+      "translationWord": "1"
+    },
+    {
+      "id": 28,
+      "set": "fOKzPqI",
+      "user": "1",
+      "stateWord": "new",
+      "originalWord": "1",
+      "translationWord": "1"
+    },
+    {
+      "id": 29,
+      "set": "fOKzPqI",
+      "user": "1",
+      "stateWord": "new",
+      "originalWord": "1",
+      "translationWord": "1"
     }
   ],
   "sets": [

@@ -6,14 +6,16 @@ import EmojiObjectsRoundedIcon from "@mui/icons-material/EmojiObjectsRounded";
 import { Box, Card, CardContent, Grid, Typography } from "@mui/material";
 
 import { getWordCountByState } from "helpers";
-import { useAppSelector } from "hooks";
+import { IWord } from "types";
 
 import { TextTitle } from "./Overview.styles";
 
-export const Overview: FC = () => {
-  const { words } = useAppSelector((state) => state.dictionary);
+interface IOverviewProps {
+  words: IWord[] | undefined;
+}
 
-  const wordCount = words.length;
+export const Overview: FC<IOverviewProps> = ({ words }) => {
+  const wordCount = words?.length;
   const newWordCount = getWordCountByState(words, "new");
   const learningWordCount = getWordCountByState(words, "learning");
   const learnedWordCount = getWordCountByState(words, "learned");
