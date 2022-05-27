@@ -1,5 +1,4 @@
 import React, { ChangeEvent, FC, MouseEvent, useState } from "react";
-import EmojiObjectsRoundedIcon from "@mui/icons-material/EmojiObjectsRounded";
 import {
   Box,
   Button,
@@ -8,6 +7,7 @@ import {
   ToggleButton,
   ToggleButtonGroup,
 } from "@mui/material";
+import EmojiObjectsRoundedIcon from "@mui/icons-material/EmojiObjectsRounded";
 import { green, grey, orange } from "@mui/material/colors";
 
 import { useActions, useAppSelector } from "hooks";
@@ -41,7 +41,6 @@ export const Filters: FC = () => {
   return (
     <Box
       sx={{
-        mb: 1,
         display: "flex",
         alignItems: "center",
         justifyContent: "space-between",
@@ -49,6 +48,7 @@ export const Filters: FC = () => {
     >
       <Box sx={{ display: "flex", gap: "1rem" }}>
         <TextField
+          sx={{ width: 210 }}
           type="text"
           size="small"
           label="Search"
@@ -66,7 +66,7 @@ export const Filters: FC = () => {
           handleClose={handleCloseModalAddWord}
         />
       </Box>
-      <Box>
+      <Box sx={{ display: "flex", gap: "1rem" }}>
         <ToggleButtonGroup
           exclusive
           size="small"

@@ -1,6 +1,6 @@
 import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/dist/query/react";
 
-import { IGetSetsParams } from "store/types";
+import { IChangeSetParams, IGetSetsParams } from "store/types";
 import { ISet } from "types";
 
 export const setApi = createApi({
@@ -32,8 +32,22 @@ export const setApi = createApi({
       }),
       invalidatesTags: (result) => ["Set"],
     }),
+    changeSet: builder.mutation<void, IChangeSetParams>({
+      query: ({ setId, title }) => ({
+        url: `/sets/${setId}`,
+        method: "PATCH",
+        body: {
+          title: title,
+        },
+      }),
+      invalidatesTags: (result) => ["Set"],
+    }),
   }),
 });
 
-export const { useGetSetsQuery, useAddSetMutation, useDeleteSetMutation } =
-  setApi;
+export const {
+  useGetSetsQuery,
+  useAddSetMutation,
+  useDeleteSetMutation,
+  useChangeSetMutation,
+} = setApi;

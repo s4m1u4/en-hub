@@ -1,6 +1,12 @@
 import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/dist/query/react";
 
-import { IChangeWordParams, IFetchWords, IGetWordsParams } from "store/types";
+import {
+  IFetchWords,
+  IGetWordsParams,
+  IChangeWordParams,
+  IFetchDictionaryWords,
+  IGetDictionaryWordsParams,
+} from "store/types";
 import { IWord } from "types";
 
 export const wordApi = createApi({
@@ -28,6 +34,18 @@ export const wordApi = createApi({
       },
       providesTags: (result) => ["Word"],
     }),
+    getDictionaryWords: builder.query<
+      IFetchDictionaryWords[],
+      IGetDictionaryWordsParams
+    >({
+      query: ({ page, limit }) => ({
+        url: "/dictionary",
+        params: {
+          _page: page,
+          _limit: limit,
+        },
+      }),
+    }),
     addWord: builder.mutation<void, IWord>({
       query: (wordData) => ({
         url: `/words`,
@@ -44,11 +62,14 @@ export const wordApi = createApi({
       invalidatesTags: (result) => ["Word"],
     }),
     changeWord: builder.mutation<void, IChangeWordParams>({
-      query: ({ wordId, newState }) => ({
+      query: ({ wordId, newState, originalWord, translationWord, set }) => ({
         url: `/words/${wordId}`,
         method: "PATCH",
         body: {
+          set: set,
           stateWord: newState,
+          originalWord: originalWord,
+          translationWord: translationWord,
         },
       }),
       invalidatesTags: (result) => ["Word"],
@@ -58,6 +79,7 @@ export const wordApi = createApi({
 
 export const {
   useGetWordsQuery,
+  useGetDictionaryWordsQuery,
   useAddWordMutation,
   useDeleteWordMutation,
   useChangeWordMutation,

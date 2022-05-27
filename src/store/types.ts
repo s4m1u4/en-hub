@@ -11,6 +11,15 @@ export interface IFetchWords {
   countWord: number;
 }
 
+export interface IFetchDictionaryWords {
+  originalWord: string;
+  translationWord: string;
+}
+
+export interface IAnswers extends IFetchDictionaryWords {
+  isCorrect: boolean;
+}
+
 export interface IGetSetsParams {
   userId: string;
 }
@@ -24,9 +33,22 @@ export interface IGetWordsParams {
   stateValue?: string;
 }
 
+export interface IGetDictionaryWordsParams {
+  page?: number;
+  limit?: number;
+}
+
 export interface IChangeWordParams {
   wordId: string | number | undefined;
-  newState: string;
+  set?: string;
+  newState?: string;
+  originalWord?: string;
+  translationWord?: string;
+}
+
+export interface IChangeSetParams {
+  setId: string | number | undefined;
+  title?: string;
 }
 
 export interface IUserState {
@@ -39,6 +61,7 @@ export interface IWordState {
   countPage: number;
   searchValue: string;
   stateValue: string;
+  setId: string;
 }
 
 export type RootState = ReturnType<typeof store.getState>;

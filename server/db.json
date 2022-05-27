@@ -19,12 +19,94 @@
       "id": 2
     }
   ],
+  "dictionary": [
+    {
+      "originalWord": "absolutely",
+      "translationWord": "безусловно"
+    },
+    {
+      "originalWord": "clearly",
+      "translationWord": "ясно"
+    },
+    {
+      "originalWord": "constantly",
+      "translationWord": "постоянно"
+    },
+    {
+      "originalWord": "daily",
+      "translationWord": "ежедневно"
+    },
+    {
+      "originalWord": "easily",
+      "translationWord": "легко"
+    },
+    {
+      "originalWord": "even",
+      "translationWord": "даже"
+    },
+    {
+      "originalWord": "exactly",
+      "translationWord": "точно"
+    },
+    {
+      "originalWord": "fondly",
+      "translationWord": "нежно"
+    },
+    {
+      "originalWord": "happily",
+      "translationWord": "счастливо"
+    },
+    {
+      "originalWord": "justly",
+      "translationWord": "справедливо"
+    },
+    {
+      "originalWord": "blouse",
+      "translationWord": "блуза"
+    },
+    {
+      "originalWord": "clothes",
+      "translationWord": "одежда"
+    },
+    {
+      "originalWord": "coat",
+      "translationWord": "пальто"
+    },
+    {
+      "originalWord": "jacket",
+      "translationWord": "пиджак, жакет"
+    },
+    {
+      "originalWord": "shirt",
+      "translationWord": "рубашка"
+    },
+    {
+      "originalWord": "shorts",
+      "translationWord": "шорты"
+    },
+    {
+      "originalWord": "skirt",
+      "translationWord": "юбка"
+    },
+    {
+      "originalWord": "suit",
+      "translationWord": "костюм"
+    },
+    {
+      "originalWord": "trousers",
+      "translationWord": "брюки"
+    },
+    {
+      "originalWord": "jeans",
+      "translationWord": "джинсы"
+    }
+  ],
   "words": [
     {
       "id": 1,
       "set": "my",
       "user": 1,
-      "stateWord": "new",
+      "stateWord": "learning",
       "originalWord": "advice",
       "translationWord": "совет"
     },
@@ -42,7 +124,7 @@
       "user": 1,
       "stateWord": "new",
       "originalWord": "buy",
-      "translationWord": "купит"
+      "translationWord": "купить"
     },
     {
       "id": 4,
@@ -144,7 +226,7 @@
       "id": 17,
       "set": "fOKzPqI",
       "user": 1,
-      "stateWord": "learning",
+      "stateWord": "learned",
       "originalWord": "pen",
       "translationWord": "ручка"
     },
@@ -152,7 +234,7 @@
       "id": 18,
       "set": "fOKzPqI",
       "user": 1,
-      "stateWord": "learning",
+      "stateWord": "learned",
       "originalWord": "note",
       "translationWord": "тетрадь"
     },
@@ -160,7 +242,7 @@
       "id": 19,
       "set": "jungle",
       "user": 1,
-      "stateWord": "new",
+      "stateWord": "learning",
       "originalWord": "buy",
       "translationWord": "покупать"
     },
@@ -179,6 +261,110 @@
       "stateWord": "new",
       "originalWord": "ball",
       "translationWord": "мяч"
+    },
+    {
+      "id": 22,
+      "set": "VRIYiHI",
+      "user": "1",
+      "stateWord": "new",
+      "originalWord": "red",
+      "translationWord": "красный"
+    },
+    {
+      "id": 23,
+      "set": "VRIYiHI",
+      "user": "1",
+      "stateWord": "new",
+      "originalWord": "grey",
+      "translationWord": "серый"
+    },
+    {
+      "id": 24,
+      "set": "VRIYiHI",
+      "user": "1",
+      "stateWord": "new",
+      "originalWord": "blue",
+      "translationWord": "голубой"
+    },
+    {
+      "id": 25,
+      "set": "VRIYiHI",
+      "user": "1",
+      "stateWord": "new",
+      "originalWord": "green",
+      "translationWord": "зеленый"
+    },
+    {
+      "id": 26,
+      "set": "VRIYiHI",
+      "user": "1",
+      "stateWord": "new",
+      "originalWord": "yellow",
+      "translationWord": "желтый"
+    },
+    {
+      "id": 27,
+      "set": "VRIYiHI",
+      "user": "1",
+      "stateWord": "new",
+      "originalWord": "pink",
+      "translationWord": "розовый"
+    },
+    {
+      "id": 28,
+      "set": "VRIYiHI",
+      "user": "1",
+      "stateWord": "new",
+      "originalWord": "orange",
+      "translationWord": "оранжевый"
+    },
+    {
+      "id": 29,
+      "set": "VRIYiHI",
+      "user": "1",
+      "stateWord": "new",
+      "originalWord": "brown",
+      "translationWord": "коричневый"
+    },
+    {
+      "id": 30,
+      "set": "VRIYiHI",
+      "user": "1",
+      "stateWord": "new",
+      "originalWord": "white",
+      "translationWord": "белый"
+    },
+    {
+      "id": 31,
+      "set": "VRIYiHI",
+      "user": "1",
+      "stateWord": "new",
+      "originalWord": "black",
+      "translationWord": "черный"
+    },
+    {
+      "id": 32,
+      "set": "VRIYiHI",
+      "user": "1",
+      "stateWord": "new",
+      "originalWord": "violet",
+      "translationWord": "фиолетовый"
+    },
+    {
+      "id": 33,
+      "set": "fOKzPqI",
+      "user": "1",
+      "stateWord": "new",
+      "originalWord": "backpack",
+      "translationWord": "рюкзак"
+    },
+    {
+      "id": 34,
+      "set": "bUwXElS",
+      "user": "1",
+      "stateWord": "learned",
+      "originalWord": "book",
+      "translationWord": "книга"
     }
   ],
   "sets": [
@@ -187,12 +373,6 @@
       "user": "admin",
       "permanent": true,
       "title": "My dictionary"
-    },
-    {
-      "id": "jungle",
-      "user": "admin",
-      "permanent": true,
-      "title": "Words from jungle"
     },
     {
       "id": "B2NOeTE",
@@ -210,6 +390,18 @@
       "id": "fOKzPqI",
       "title": "School",
       "user": 1,
+      "permanent": false
+    },
+    {
+      "id": "VRIYiHI",
+      "title": "Colors",
+      "user": "1",
+      "permanent": false
+    },
+    {
+      "id": "bUwXElS",
+      "title": "Education",
+      "user": "1",
       "permanent": false
     }
   ]

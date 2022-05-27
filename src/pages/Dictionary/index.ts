@@ -8,6 +8,8 @@ export { WordsItem } from "./WordsItem";
 export { SetsList } from "./SetsList";
 export { SetsItem } from "./SetsItem";
 export { ModalAddWord } from "./ModalAddWord";
+export { ModalChangeWord } from "./ModalChangeWord";
 export { ModalDeleteWord } from "./ModalDeleteWord";
 export { ModalAddSet } from "./ModalAddSet";
+export { ModalChangeSet } from "./ModalChangeSet";
 export { ModalDeleteSet } from "./ModalDeleteSet";

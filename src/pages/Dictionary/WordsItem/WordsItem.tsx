@@ -3,22 +3,24 @@ import { Link, useParams } from "react-router-dom";
 import PopupState, { bindMenu, bindTrigger } from "material-ui-popup-state";
 import {
   Box,
-  IconButton,
   Menu,
-  MenuItem,
   Stack,
+  MenuItem,
   Typography,
+  IconButton,
 } from "@mui/material";
 import { blue, grey } from "@mui/material/colors";
+import EditIcon from "@mui/icons-material/Edit";
 import DeleteRoundedIcon from "@mui/icons-material/DeleteRounded";
 import EmojiObjectsRoundedIcon from "@mui/icons-material/EmojiObjectsRounded";
 
-import { ModalDeleteWord } from "pages/Dictionary/ModalDeleteWord";
+import { ModalChangeWord, ModalDeleteWord } from "pages/Dictionary";
 import {
   useChangeWordMutation,
   useDeleteWordMutation,
 } from "store/reducers/word/wordApi";
 import { handleIconStyles } from "helpers";
+import { IChangeWordParams } from "store/types";
 import { ISet, IWord } from "types";
 import { useActions } from "hooks";
 
@@ -37,20 +39,26 @@ export const WordsItem: FC<IWordsItem> = ({ word, sets }) => {
 
   const [openModalDeleteWord, setModalOpenDeleteWord] =
     useState<boolean>(false);
+  const [openModalChangeWord, setModalOpenChangeWord] =
+    useState<boolean>(false);
 
   const handleOpenModalDeleteWord = () => setModalOpenDeleteWord(true);
   const handleCloseModalDeleteWord = () => setModalOpenDeleteWord(false);
+  const handleOpenModalChangeWord = () => setModalOpenChangeWord(true);
+  const handleCloseModalChangeWord = () => setModalOpenChangeWord(false);
 
   const handleDeleteWord = async (wordId: string | number | undefined) => {
     await deleteWord(wordId);
     handleCloseModalDeleteWord();
   };
 
-  const handleSetStateWord = async (
-    wordId: string | number | undefined,
-    newState: string
-  ) => {
-    await changeWord({ wordId, newState });
+  const handleChangeWord = async ({
+    wordId,
+    newState,
+    originalWord,
+    translationWord,
+  }: IChangeWordParams) => {
+    await changeWord({ wordId, newState, originalWord, translationWord });
   };
 
   const currentSet: ISet | undefined = sets?.find(
@@ -84,6 +92,15 @@ export const WordsItem: FC<IWordsItem> = ({ word, sets }) => {
                 {currentSet?.title}
               </Typography>
             )}
+            <IconButton onClick={handleOpenModalChangeWord}>
+              <EditIcon sx={{ color: grey[500] }} />
+            </IconButton>
+            <ModalChangeWord
+              word={word}
+              sets={sets}
+              open={openModalChangeWord}
+              handleClose={handleCloseModalChangeWord}
+            />
             <IconButton {...bindTrigger(popupState)}>
               <EmojiObjectsRoundedIcon sx={handleIconStyles(word?.stateWord)} />
             </IconButton>
@@ -99,7 +116,9 @@ export const WordsItem: FC<IWordsItem> = ({ word, sets }) => {
             <Menu {...bindMenu(popupState)}>
               {word?.stateWord !== "new" && (
                 <MenuItem
-                  onClick={() => handleSetStateWord(word?.id, "new")}
+                  onClick={() =>
+                    handleChangeWord({ wordId: word?.id, newState: "new" })
+                  }
                   dense
                 >
                   Reset learning status
@@ -107,7 +126,9 @@ export const WordsItem: FC<IWordsItem> = ({ word, sets }) => {
               )}
               {word?.stateWord !== "learning" && (
                 <MenuItem
-                  onClick={() => handleSetStateWord(word?.id, "learning")}
+                  onClick={() =>
+                    handleChangeWord({ wordId: word?.id, newState: "learning" })
+                  }
                   dense
                 >
                   Move to learning words
@@ -115,7 +136,9 @@ export const WordsItem: FC<IWordsItem> = ({ word, sets }) => {
               )}
               {word?.stateWord !== "learned" && (
                 <MenuItem
-                  onClick={() => handleSetStateWord(word?.id, "learned")}
+                  onClick={() =>
+                    handleChangeWord({ wordId: word?.id, newState: "learned" })
+                  }
                   dense
                 >
                   Move to learned words

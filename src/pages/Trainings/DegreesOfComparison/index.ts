@@ -1,0 +1,1 @@
+export { DegreesOfComparison } from "./DegreesOfComparison";

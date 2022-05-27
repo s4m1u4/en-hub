@@ -1,0 +1,1 @@
+export { TranslationWords } from "./TranslationWords";

@@ -86,7 +86,7 @@ export const ModalAddWord: FC<IModalAddWordProps> = ({ open, handleClose }) => {
           </Grid>
           <Grid item xs={6}>
             <Button fullWidth color="success" type="submit" variant="contained">
-              Add record
+              Add word
             </Button>
           </Grid>
           <Grid item xs={6}>

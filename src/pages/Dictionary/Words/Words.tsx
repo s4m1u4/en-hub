@@ -25,18 +25,22 @@ export const Words: FC = () => {
     (state) => state.word
   );
 
-  const { data, isLoading: isLoadingWords } = useGetWordsQuery(
+  const {
+    data,
+    isLoading: isLoadingWords,
+    isFetching: isFetchingWords,
+  } = useGetWordsQuery(
     {
-      userId,
-      setId,
-      limit,
       page,
-      searchValue,
+      limit,
+      setId,
+      userId,
       stateValue,
+      searchValue,
     },
     { refetchOnMountOrArgChange: true }
   );
-  const { data: sets } = useGetSetsQuery(
+  const { data: sets, isLoading: isLoadingSets } = useGetSetsQuery(
     { userId },
     { refetchOnMountOrArgChange: true }
   );
@@ -52,38 +56,46 @@ export const Words: FC = () => {
 
   return (
     <Container sx={{ py: 2 }}>
-      <Box
-        sx={{
-          mb: 1,
-          display: "flex",
-          alignItems: "center",
-          justifyContent: "space-between",
-        }}
-      >
-        <TextTitle>{currentSet?.title}</TextTitle>
-      </Box>
-      <Filters />
-      {isLoadingWords ? (
-        <Box sx={{ py: 4, display: "flex", justifyContent: "center" }}>
+      {isLoadingWords && isLoadingSets ? (
+        <Box
+          sx={{
+            position: "fixed",
+            top: "50%",
+            left: "50%",
+            transform: "translate(-50%, -50%)",
+          }}
+        >
           <CircularProgress sx={{ color: green[500] }} />
         </Box>
-      ) : data?.words?.length ? (
-        <WordsList words={data?.words} sets={sets} />
       ) : (
-        <Typography variant="subtitle1">Word list is empty ☹️</Typography>
-      )}
-      {countPage > 1 && (
-        <Box sx={{ mt: 1, display: "flex", justifyContent: "center" }}>
-          <Pagination
-            page={page}
-            count={countPage}
-            size="small"
-            color="primary"
-            shape="rounded"
-            variant="outlined"
-            onChange={handleChangePage}
-            sx={{ "& button": { margin: "0 3px" } }}
-          />
+        <Box sx={{ display: "flex", flexDirection: "column", gap: "0.5rem" }}>
+          <TextTitle>{currentSet?.title}</TextTitle>
+          <Filters />
+          {isFetchingWords ? (
+            <Box sx={{ py: 4, display: "flex", justifyContent: "center" }}>
+              <CircularProgress sx={{ color: green[500] }} />
+            </Box>
+          ) : data?.words?.length ? (
+            <>
+              <WordsList words={data?.words} sets={sets} />
+              {countPage > 1 && (
+                <Box sx={{ display: "flex", justifyContent: "center" }}>
+                  <Pagination
+                    page={page}
+                    count={countPage}
+                    size="small"
+                    color="primary"
+                    shape="rounded"
+                    variant="outlined"
+                    onChange={handleChangePage}
+                    sx={{ "& button": { margin: "0 3px" } }}
+                  />
+                </Box>
+              )}
+            </>
+          ) : (
+            <Typography variant="subtitle1">Word list is empty ☹️</Typography>
+          )}
         </Box>
       )}
     </Container>

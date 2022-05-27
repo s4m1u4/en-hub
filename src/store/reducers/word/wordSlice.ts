@@ -7,6 +7,7 @@ const initialState: IWordState = {
   limit: 10,
   page: 1,
   countPage: 0,
+  setId: "",
   stateValue: "",
   searchValue: "",
 };
@@ -24,6 +25,9 @@ const wordSlice = createSlice({
     },
     setStateValue: (state, action: PayloadAction<string>) => {
       state.stateValue = action.payload;
+    },
+    setSetId: (state, action: PayloadAction<string>) => {
+      state.setId = action.payload;
     },
   },
   extraReducers: (builder) => {
