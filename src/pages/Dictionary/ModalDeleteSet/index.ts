@@ -1,0 +1,1 @@
+export { ModalDeleteSet } from "./ModalDeleteSet";

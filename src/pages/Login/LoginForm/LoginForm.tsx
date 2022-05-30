@@ -1,24 +1,32 @@
-import React, { ChangeEvent, FC } from "react";
+import React, { ChangeEvent, FC, useEffect, useState } from "react";
 import { useFormik } from "formik";
 import { LoadingButton } from "@mui/lab";
 import { Alert, Grid, TextField } from "@mui/material";
 
 import { LoginFormSchema } from "./LoginFormSchema";
-import { removeError, userAuthentication } from "store/reducers/userSlice";
-import { useAppDispatch, useAppSelector } from "hooks";
-import { IUserAuthenticationData } from "types";
+import { useAuthenticationUserMutation } from "store/reducers/user/userApi";
+import { IAuthenticationData } from "types";
 
 export const LoginForm: FC = () => {
-  const dispatch = useAppDispatch();
-  const { error, isLoading } = useAppSelector((state) => state.user);
+  const [errorMessage, setErrorMessage] = useState<any>(null);
+  const [
+    authenticationUser,
+    { error: authenticationError, isLoading: authenticationIsLoading },
+  ] = useAuthenticationUserMutation();
+
+  useEffect(() => {
+    if (!!authenticationError && "data" in authenticationError) {
+      setErrorMessage(authenticationError?.data);
+    }
+  }, [authenticationError]);
 
   const formikHandleChange = (event: ChangeEvent) => {
     formik.handleChange(event);
-    dispatch(removeError());
+    setErrorMessage(null);
   };
 
-  const handleSubmit = async (values: IUserAuthenticationData) => {
-    await dispatch(userAuthentication(values));
+  const handleSubmit = async (values: IAuthenticationData) => {
+    await authenticationUser(values);
   };
 
   const formik = useFormik({
@@ -33,10 +41,10 @@ export const LoginForm: FC = () => {
   return (
     <form onSubmit={formik.handleSubmit}>
       <Grid container spacing={2}>
-        {error && (
+        {errorMessage && (
           <Grid item xs={12}>
             <Alert variant="filled" severity="error">
-              {error}
+              {errorMessage}
             </Alert>
           </Grid>
         )}
@@ -73,7 +81,7 @@ export const LoginForm: FC = () => {
             fullWidth
             type="submit"
             variant="contained"
-            loading={isLoading}
+            loading={authenticationIsLoading}
           >
             Sign in
           </LoadingButton>

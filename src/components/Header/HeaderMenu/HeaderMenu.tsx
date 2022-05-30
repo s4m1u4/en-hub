@@ -1,5 +1,5 @@
 import React, { FC, useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import {
   Box,
   Menu,
@@ -9,12 +9,17 @@ import {
   IconButton,
 } from "@mui/material";
 
-import { removeToken, removeUserId } from "helpers";
-import { useAppDispatch } from "hooks";
-import { setIsAuth } from "store/reducers/userSlice";
+import { getUserId, removeToken, removeUserId } from "helpers";
+import { useGetUserQuery } from "store/reducers/user/userApi";
+import { useActions } from "hooks";
 
 export const HeaderMenu: FC = () => {
-  const dispatch = useAppDispatch();
+  const userId = getUserId();
+  const navigate = useNavigate();
+
+  const { setIsAuth } = useActions();
+  const { data: user } = useGetUserQuery(userId);
+
   const [isUserMenuOpen, setIsUserMenuOpen] = useState<null | HTMLElement>(
     null
   );
@@ -27,17 +32,21 @@ export const HeaderMenu: FC = () => {
     setIsUserMenuOpen(null);
   };
 
-  const handleSignOut = () => {
+  const handleSignOut = async () => {
     removeToken();
     removeUserId();
-    dispatch(setIsAuth());
+    setIsAuth();
     setIsUserMenuOpen(null);
+    navigate("/login");
   };
 
   return (
-    <Box>
+    <Box sx={{ display: "flex", alignItems: "center", gap: "1rem" }}>
+      <Typography variant="body1">
+        {user?.firstName} {user?.lastName}
+      </Typography>
       <IconButton sx={{ p: 0 }} onClick={handleOpenUserMenu}>
-        <Avatar src="" alt="" />
+        <Avatar src="" alt={`${user?.firstName} ${user?.lastName}`} />
       </IconButton>
       <Menu
         sx={{ mt: "45px" }}

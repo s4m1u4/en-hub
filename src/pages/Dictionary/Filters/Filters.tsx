@@ -1,5 +1,4 @@
 import React, { ChangeEvent, FC, MouseEvent, useState } from "react";
-import EmojiObjectsRoundedIcon from "@mui/icons-material/EmojiObjectsRounded";
 import {
   Box,
   Button,
@@ -8,53 +7,40 @@ import {
   ToggleButton,
   ToggleButtonGroup,
 } from "@mui/material";
+import EmojiObjectsRoundedIcon from "@mui/icons-material/EmojiObjectsRounded";
 import { green, grey, orange } from "@mui/material/colors";
 
-import { useAppDispatch, useAppSelector } from "hooks";
+import { useActions, useAppSelector } from "hooks";
 import { ModalAddWord } from "pages/Dictionary";
-import {
-  getWords,
-  setStateValue,
-  setSearchValue,
-} from "store/reducers/dictionarySlice";
 
 export const Filters: FC = () => {
-  const dispatch = useAppDispatch();
-  const { searchValue, stateValue } = useAppSelector(
-    (state) => state.dictionary
-  );
+  const { setPage, setStateValue, setSearchValue } = useActions();
+
+  const { stateValue } = useAppSelector((state) => state.word);
+
   const [openModalAddWord, setModalOpenAddWord] = useState<boolean>(false);
 
   const handleOpenModalAddWord = () => setModalOpenAddWord(true);
   const handleCloseModalAddWord = () => setModalOpenAddWord(false);
 
-  const handleAlignment = (
+  const handleAlignment = async (
     event: MouseEvent<HTMLElement>,
     newStateValue: string
   ) => {
     if (newStateValue !== null) {
-      dispatch(
-        getWords({
-          searchValue,
-          stateValue: dispatch(setStateValue(newStateValue)).payload,
-        })
-      );
+      setPage(1);
+      setStateValue(newStateValue);
     }
   };
 
-  const handleSearchWords = (event: ChangeEvent<HTMLInputElement>) => {
-    dispatch(
-      getWords({
-        searchValue: dispatch(setSearchValue(event.target.value)).payload,
-        stateValue,
-      })
-    );
+  const handleSearchWords = async (event: ChangeEvent<HTMLInputElement>) => {
+    setPage(1);
+    setSearchValue(event.target.value);
   };
 
   return (
     <Box
       sx={{
-        mb: 1,
         display: "flex",
         alignItems: "center",
         justifyContent: "space-between",
@@ -62,6 +48,7 @@ export const Filters: FC = () => {
     >
       <Box sx={{ display: "flex", gap: "1rem" }}>
         <TextField
+          sx={{ width: 210 }}
           type="text"
           size="small"
           label="Search"
@@ -72,14 +59,14 @@ export const Filters: FC = () => {
           variant="contained"
           onClick={handleOpenModalAddWord}
         >
-          Add
+          Add word
         </Button>
         <ModalAddWord
           open={openModalAddWord}
           handleClose={handleCloseModalAddWord}
         />
       </Box>
-      <Box>
+      <Box sx={{ display: "flex", gap: "1rem" }}>
         <ToggleButtonGroup
           exclusive
           size="small"

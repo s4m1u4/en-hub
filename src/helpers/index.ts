@@ -22,7 +22,7 @@ export const setUserId = (userId: string | number) => {
 };
 
 export const getUserId = () => {
-  return Number(cookies.get("user_id")) || "";
+  return cookies.get("user_id") || "";
 };
 
 export const removeUserId = () => {
@@ -34,13 +34,13 @@ export const isAuth = () => {
 };
 
 export const getWordCountByState = (
-  words: IWord[],
+  words: IWord[] | undefined,
   stateWord: "new" | "learning" | "learned"
 ) => {
-  return words.filter((word) => word.stateWord === stateWord).length;
+  return words?.filter((word) => word.stateWord === stateWord).length;
 };
 
-export const handleIconStyles = (stateWord: string) => ({
+export const handleIconStyles = (stateWord: string | undefined) => ({
   color:
     stateWord === "new"
       ? grey[500]

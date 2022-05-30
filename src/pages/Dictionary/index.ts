@@ -1,8 +1,15 @@
 export { Dictionary } from "./Dictionary";
 export { Overview } from "./Overview";
+export { Sets } from "./Sets";
 export { Filters } from "./Filters";
 export { Words } from "./Words";
 export { WordsList } from "./WordsList";
 export { WordsItem } from "./WordsItem";
+export { SetsList } from "./SetsList";
+export { SetsItem } from "./SetsItem";
 export { ModalAddWord } from "./ModalAddWord";
+export { ModalChangeWord } from "./ModalChangeWord";
 export { ModalDeleteWord } from "./ModalDeleteWord";
+export { ModalAddSet } from "./ModalAddSet";
+export { ModalChangeSet } from "./ModalChangeSet";
+export { ModalDeleteSet } from "./ModalDeleteSet";
