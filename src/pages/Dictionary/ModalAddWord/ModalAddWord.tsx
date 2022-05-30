@@ -1,15 +1,15 @@
 import React, { FC } from "react";
 import { useFormik } from "formik";
+import { useParams } from "react-router-dom";
 import { Button, Grid, TextField } from "@mui/material";
 
-import { ModalComponent } from "components/shared";
+import { useAddWordMutation } from "store/reducers/word/wordApi";
 import { ModalAddWordSchema } from "./ModalAddWordSchema";
-import { useAppDispatch, useAppSelector } from "hooks";
+import { ModalComponent } from "components/shared";
 import { getUserId } from "helpers";
-import { addWord, getWords } from "store/reducers/dictionarySlice";
 import { IWord } from "types";
 
-import { ModalTitle } from "pages/Dictionary/ModalAddWord/ModalAddWord.styles";
+import { ModalTitle } from "./ModalAddWord.styles";
 
 interface IModalAddWordProps {
   open: boolean;
@@ -17,27 +17,29 @@ interface IModalAddWordProps {
 }
 
 export const ModalAddWord: FC<IModalAddWordProps> = ({ open, handleClose }) => {
-  const dispatch = useAppDispatch();
-  const { searchValue, stateValue } = useAppSelector(
-    (state) => state.dictionary
-  );
+  const userId = getUserId();
+  const { setId } = useParams();
+
+  const [addWord] = useAddWordMutation();
+
+  const handleSubmit = async (values: IWord) => {
+    await addWord(values);
+    formik.resetForm();
+    handleClose();
+  };
 
   const formik = useFormik({
     initialValues: {
       id: "",
-      set: getUserId(),
-      user: getUserId(),
+      set: setId || "",
+      user: userId,
       stateWord: "new",
       originalWord: "",
       translationWord: "",
     },
+    enableReinitialize: true,
     validationSchema: ModalAddWordSchema,
-    onSubmit: async (values: IWord) => {
-      await dispatch(addWord(values));
-      await dispatch(getWords({ searchValue, stateValue }));
-      formik.resetForm();
-      handleClose();
-    },
+    onSubmit: handleSubmit,
   });
 
   return (
@@ -84,7 +86,7 @@ export const ModalAddWord: FC<IModalAddWordProps> = ({ open, handleClose }) => {
           </Grid>
           <Grid item xs={6}>
             <Button fullWidth color="success" type="submit" variant="contained">
-              Add record
+              Add word
             </Button>
           </Grid>
           <Grid item xs={6}>

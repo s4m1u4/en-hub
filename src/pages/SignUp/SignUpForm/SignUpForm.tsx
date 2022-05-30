@@ -1,24 +1,32 @@
-import React, { ChangeEvent, FC } from "react";
+import React, { ChangeEvent, FC, useEffect, useState } from "react";
 import { useFormik } from "formik";
 import { LoadingButton } from "@mui/lab";
 import { Alert, Grid, MenuItem, TextField } from "@mui/material";
 
 import { SignUpFormSchema } from "./SignUpFormSchema";
-import { removeError, userRegistration } from "store/reducers/userSlice";
-import { useAppDispatch, useAppSelector } from "hooks";
-import { IUserRegistrationData } from "types";
+import { useRegistrationUserMutation } from "store/reducers/user/userApi";
+import { IRegistrationData } from "types";
 
 export const SignUpForm: FC = () => {
-  const dispatch = useAppDispatch();
-  const { error, isLoading } = useAppSelector((state) => state.user);
+  const [errorMessage, setErrorMessage] = useState<any>(null);
+  const [
+    registrationUser,
+    { error: registrationError, isLoading: registrationIsLoading },
+  ] = useRegistrationUserMutation();
+
+  useEffect(() => {
+    if (!!registrationError && "data" in registrationError) {
+      setErrorMessage(registrationError?.data);
+    }
+  }, [registrationError]);
 
   const formikHandleChange = (event: ChangeEvent) => {
     formik.handleChange(event);
-    dispatch(removeError());
+    setErrorMessage(null);
   };
 
-  const handleSubmit = async (values: IUserRegistrationData) => {
-    await dispatch(userRegistration(values));
+  const handleSubmit = async (values: IRegistrationData) => {
+    await registrationUser(values);
   };
 
   const formik = useFormik({
@@ -37,10 +45,10 @@ export const SignUpForm: FC = () => {
   return (
     <form onSubmit={formik.handleSubmit}>
       <Grid container spacing={2}>
-        {error && (
+        {errorMessage && (
           <Grid item xs={12}>
             <Alert variant="filled" severity="error">
-              {error}
+              {errorMessage}
             </Alert>
           </Grid>
         )}
@@ -136,7 +144,7 @@ export const SignUpForm: FC = () => {
           <LoadingButton
             fullWidth
             variant="contained"
-            loading={isLoading}
+            loading={registrationIsLoading}
             type="submit"
           >
             Sign up

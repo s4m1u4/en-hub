@@ -1,50 +1,69 @@
 import React, { FC, useState } from "react";
+import { Link, useParams } from "react-router-dom";
 import PopupState, { bindMenu, bindTrigger } from "material-ui-popup-state";
-import { Box, IconButton, Menu, MenuItem, Stack } from "@mui/material";
-import { grey } from "@mui/material/colors";
+import {
+  Box,
+  Menu,
+  Stack,
+  MenuItem,
+  Typography,
+  IconButton,
+} from "@mui/material";
+import { blue, grey } from "@mui/material/colors";
+import EditIcon from "@mui/icons-material/Edit";
 import DeleteRoundedIcon from "@mui/icons-material/DeleteRounded";
 import EmojiObjectsRoundedIcon from "@mui/icons-material/EmojiObjectsRounded";
 
-import { ModalDeleteWord } from "pages/Dictionary/ModalDeleteWord";
-import { useAppDispatch, useAppSelector } from "hooks";
+import { ModalChangeWord, ModalDeleteWord } from "pages/Dictionary";
 import {
-  getWords,
-  deleteWord,
-  changeStateWord,
-} from "store/reducers/dictionarySlice";
+  useChangeWordMutation,
+  useDeleteWordMutation,
+} from "store/reducers/word/wordApi";
 import { handleIconStyles } from "helpers";
-import { IWord } from "types";
+import { IChangeWordParams } from "store/types";
+import { ISet, IWord } from "types";
+import { useActions } from "hooks";
 
 import { TextWord } from "./WordsItem.styles";
 
 interface IWordsItem {
-  word: IWord;
+  word?: IWord | undefined;
+  sets?: ISet[] | undefined;
 }
 
-export const WordsItem: FC<IWordsItem> = ({ word }) => {
-  const dispatch = useAppDispatch();
-  const { searchValue, stateValue } = useAppSelector(
-    (state) => state.dictionary
-  );
+export const WordsItem: FC<IWordsItem> = ({ word, sets }) => {
+  const { setId } = useParams();
+  const { resetState } = useActions();
+  const [deleteWord] = useDeleteWordMutation();
+  const [changeWord] = useChangeWordMutation();
+
   const [openModalDeleteWord, setModalOpenDeleteWord] =
+    useState<boolean>(false);
+  const [openModalChangeWord, setModalOpenChangeWord] =
     useState<boolean>(false);
 
   const handleOpenModalDeleteWord = () => setModalOpenDeleteWord(true);
   const handleCloseModalDeleteWord = () => setModalOpenDeleteWord(false);
+  const handleOpenModalChangeWord = () => setModalOpenChangeWord(true);
+  const handleCloseModalChangeWord = () => setModalOpenChangeWord(false);
 
-  const handleDeleteWord = async (wordId: string | number) => {
-    await dispatch(deleteWord(wordId));
-    await dispatch(getWords({ searchValue, stateValue }));
+  const handleDeleteWord = async (wordId: string | number | undefined) => {
+    await deleteWord(wordId);
     handleCloseModalDeleteWord();
   };
 
-  const handleSetStateWord = async (
-    wordId: string | number,
-    newState: string
-  ) => {
-    await dispatch(changeStateWord({ wordId, newState }));
-    await dispatch(getWords({ searchValue, stateValue }));
+  const handleChangeWord = async ({
+    wordId,
+    newState,
+    originalWord,
+    translationWord,
+  }: IChangeWordParams) => {
+    await changeWord({ wordId, newState, originalWord, translationWord });
   };
+
+  const currentSet: ISet | undefined = sets?.find(
+    (set) => set.id === word?.set
+  );
 
   return (
     <Stack
@@ -57,16 +76,36 @@ export const WordsItem: FC<IWordsItem> = ({ word }) => {
       }}
     >
       <TextWord>
-        <span>{word.originalWord}</span> - {word.translationWord}
+        <span>{word?.originalWord}</span> - {word?.translationWord}
       </TextWord>
       <PopupState variant="popper">
         {(popupState) => (
-          <Box>
+          <Box sx={{ display: "flex", alignItems: "center" }}>
+            {word?.set !== setId && (
+              <Typography
+                sx={{ color: blue[500], mr: 1 }}
+                variant="body2"
+                component={Link}
+                to={`/dictionary/sets/${currentSet?.id}`}
+                onClick={() => resetState()}
+              >
+                {currentSet?.title}
+              </Typography>
+            )}
+            <IconButton onClick={handleOpenModalChangeWord}>
+              <EditIcon sx={{ color: grey[500] }} />
+            </IconButton>
+            <ModalChangeWord
+              word={word}
+              sets={sets}
+              open={openModalChangeWord}
+              handleClose={handleCloseModalChangeWord}
+            />
             <IconButton {...bindTrigger(popupState)}>
-              <EmojiObjectsRoundedIcon sx={handleIconStyles(word.stateWord)} />
+              <EmojiObjectsRoundedIcon sx={handleIconStyles(word?.stateWord)} />
             </IconButton>
             <IconButton onClick={handleOpenModalDeleteWord}>
-              <DeleteRoundedIcon />
+              <DeleteRoundedIcon sx={{ color: grey[500] }} />
             </IconButton>
             <ModalDeleteWord
               word={word}
@@ -75,25 +114,31 @@ export const WordsItem: FC<IWordsItem> = ({ word }) => {
               handleDeleteWord={handleDeleteWord}
             />
             <Menu {...bindMenu(popupState)}>
-              {word.stateWord !== "new" && (
+              {word?.stateWord !== "new" && (
                 <MenuItem
-                  onClick={() => handleSetStateWord(word.id, "new")}
+                  onClick={() =>
+                    handleChangeWord({ wordId: word?.id, newState: "new" })
+                  }
                   dense
                 >
                   Reset learning status
                 </MenuItem>
               )}
-              {word.stateWord !== "learning" && (
+              {word?.stateWord !== "learning" && (
                 <MenuItem
-                  onClick={() => handleSetStateWord(word.id, "learning")}
+                  onClick={() =>
+                    handleChangeWord({ wordId: word?.id, newState: "learning" })
+                  }
                   dense
                 >
                   Move to learning words
                 </MenuItem>
               )}
-              {word.stateWord !== "learned" && (
+              {word?.stateWord !== "learned" && (
                 <MenuItem
-                  onClick={() => handleSetStateWord(word.id, "learned")}
+                  onClick={() =>
+                    handleChangeWord({ wordId: word?.id, newState: "learned" })
+                  }
                   dense
                 >
                   Move to learned words

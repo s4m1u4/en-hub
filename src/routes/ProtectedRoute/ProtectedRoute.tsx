@@ -7,5 +7,5 @@ import { useAppSelector } from "hooks";
 export const ProtectedRoute: FC<IProtectedRoute> = ({ children }) => {
   const { isAuth } = useAppSelector((state) => state.user);
 
-  return <>{isAuth ? <Navigate to="/dashboard" /> : children}</>;
+  return <>{isAuth ? <Navigate to="/dictionary" /> : children}</>;
 };

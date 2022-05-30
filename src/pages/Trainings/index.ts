@@ -1,0 +1,10 @@
+export { Trainings } from "./Trainings";
+export { Vocabulary } from "./Vocabulary";
+export { Grammar } from "./Grammar";
+export { EnglishTenses } from "./EnglishTenses";
+export { IrregularVerbs } from "./IrregularVerbs";
+export { ConditionalSentences } from "./ConditionalSentences";
+export { PassiveVoice } from "./PassiveVoice";
+export { DegreesOfComparison } from "./DegreesOfComparison";
+export { TranslationWords } from "./TranslationWords";
+export { ChartPie } from "./ChartPie";

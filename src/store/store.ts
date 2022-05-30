@@ -1,11 +1,23 @@
 import { configureStore } from "@reduxjs/toolkit";
 
-import userSlice from "store/reducers/userSlice";
-import dictionarySlice from "store/reducers/dictionarySlice";
+import { userApi } from "store/reducers/user/userApi";
+import { userReducer } from "store/reducers/user/userSlice";
+import { wordApi } from "store/reducers/word/wordApi";
+import { wordReducer } from "store/reducers/word/wordSlice";
+import { setApi } from "store/reducers/set/setApi";
 
 export const store = configureStore({
   reducer: {
-    user: userSlice,
-    dictionary: dictionarySlice,
+    user: userReducer,
+    word: wordReducer,
+    [userApi.reducerPath]: userApi.reducer,
+    [wordApi.reducerPath]: wordApi.reducer,
+    [setApi.reducerPath]: setApi.reducer,
   },
+  middleware: (getDefaultMiddleware) =>
+    getDefaultMiddleware().concat(
+      userApi.middleware,
+      wordApi.middleware,
+      setApi.middleware
+    ),
 });
