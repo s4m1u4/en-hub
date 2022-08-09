@@ -12,7 +12,7 @@ import {
   CircularProgress,
 } from "@mui/material";
 
-import { getWordCountByState } from "helpers";
+import { getWordCountByState } from "pages/Dictionary/helpers";
 import { IWord } from "types";
 
 import { TextTitle } from "./Overview.styles";
